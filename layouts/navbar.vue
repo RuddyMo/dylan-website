@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-between px-2 py-2 text-black bg-white">
-    <h1 class="text-sm  ">Dylan.</h1>
+    <a href="/" class="text-sm">Dylan.</a>
     <nav class="flex gap-3 text-sm">
       <a>
         <nuxt-link to="/gallerie">Index</nuxt-link>

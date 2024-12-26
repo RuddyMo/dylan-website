@@ -86,7 +86,7 @@ const images = ref([
   'img/index/44.jpg',
   'img/index/45.jpg',
 ]);
-
+  
 const selectedImage = ref(null);
 
 const openModal = (image: any) => {

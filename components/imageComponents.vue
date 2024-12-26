@@ -22,20 +22,20 @@ const screenHeight = ref(1080);
 const adjustedHeight = computed(() => screenHeight.value - 32);
 
 const images = ref([
-  'img/accueil/1.jpg',
-  'img/accueil/2.jpg',
-  'img/accueil/3.jpg',
-  'img/accueil/4.jpg',
-  'img/accueil/5.jpg',
-  'img/accueil/6.jpg',
-  'img/accueil/7.jpg',
-  'img/accueil/8.jpg',
-  'img/accueil/9.jpg',
-  'img/accueil/10.jpg',
-  'img/accueil/11.jpg',
-  'img/accueil/12.jpg',
-  'img/accueil/13.jpg',
-  'img/accueil/14.jpg',
+  'img/accueil/1.JPG',
+  'img/accueil/2.JPG',
+  'img/accueil/3.JPG',
+  'img/accueil/4.JPG',
+  'img/accueil/5.JPG',
+  'img/accueil/6.JPG',
+  'img/accueil/7.JPG',
+  'img/accueil/8.JPG',
+  'img/accueil/9.JPG',
+  'img/accueil/10.JPG',
+  'img/accueil/11.JPG',
+  'img/accueil/12.JPG',
+  'img/accueil/13.JPG',
+  'img/accueil/14.JPG',
 
 ]);
 

@@ -1,4 +1,3 @@
-<!-- Horizontal.vue -->
 <template>
   <div class="relative h-[calc(100vh-32px)] overflow-hidden">
     <div
@@ -9,13 +8,9 @@
       <div
         v-for="(image, index) in images"
         :key="index"
-        class="h-full w-screen flex-shrink-0"
+        class="h-auto sm:h-full w-auto sm:w-screen flex-shrink-0 flex justify-center"
       >
-        <img
-          :src="`https://picsum.photos/${screenWidth}/${adjustedHeight}?random=${index}`"
-          class="h-full w-full object-cover"
-          alt="Random image"
-        />
+        <img :src="image" class="h-full w-auto" alt="Slide image" />
       </div>
     </div>
   </div>
@@ -25,9 +20,25 @@
 const screenWidth = ref(1920);
 const screenHeight = ref(1080);
 const adjustedHeight = computed(() => screenHeight.value - 32);
-const numImages = 5;
 
-const images = ref(Array(numImages).fill(null));
+const images = ref([
+  'img/accueil/1.jpg',
+  'img/accueil/2.jpg',
+  'img/accueil/3.jpg',
+  'img/accueil/4.jpg',
+  'img/accueil/5.jpg',
+  'img/accueil/6.jpg',
+  'img/accueil/7.jpg',
+  'img/accueil/8.jpg',
+  'img/accueil/9.jpg',
+  'img/accueil/10.jpg',
+  'img/accueil/11.jpg',
+  'img/accueil/12.jpg',
+  'img/accueil/13.jpg',
+  'img/accueil/14.jpg',
+
+]);
+
 const container = ref(null);
 const scrollPosition = ref(0);
 

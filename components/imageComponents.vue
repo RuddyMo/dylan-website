@@ -1,21 +1,8 @@
 <template>
-  <div
-      class="relative h-[calc(100vh-32px)] overflow-hidden"
-      @touchstart="handleTouchStart"
-      @touchmove="handleTouchMove"
-      @touchend="handleTouchEnd"
-  >
-    <div
-        ref="container"
-        class="absolute flex h-full transition-transform duration-300 ease-out"
-        :style="{ transform: `translateX(-${scrollPosition}px)` }"
-    >
-      <div
-          v-for="(image, index) in images"
-          :key="index"
-          class="h-auto sm:h-full w-auto sm:w-screen flex-shrink-0 flex justify-center"
-      >
-        <img :src="image" class="h-full w-auto" alt="Slide image" />
+  <div class="relative h-[calc(100vh-32px)] overflow-hidden" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+    <div ref="container" class="absolute flex h-full w-full transition-transform duration-300 ease-out gap-x-4" :style="{ transform: `translateX(-${scrollPosition}px)` }">
+      <div v-for="(image, index) in images" :key="index" class="flex justify-center items-center min-w-full">
+        <NuxtImg :src="image" class="h-full w-auto object-contain" alt="Slide image" />
       </div>
     </div>
   </div>
@@ -44,7 +31,7 @@ const images = ref([
   'img/accueil/11.JPG',
   'img/accueil/12.JPG',
   'img/accueil/13.JPG',
-  'img/accueil/14.JPG',
+  'img/accueil/14.JPG'
 ]);
 
 const container = ref(null);
@@ -93,9 +80,6 @@ const handleTouchEnd = () => {
 
 const updateScrollPosition = (delta) => {
   const maxScroll = container.value.scrollWidth - window.innerWidth;
-  scrollPosition.value = Math.max(
-      0,
-      Math.min(maxScroll, scrollPosition.value + delta)
-  );
+  scrollPosition.value = Math.max(0, Math.min(maxScroll, scrollPosition.value + delta));
 };
 </script>

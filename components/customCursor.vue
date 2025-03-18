@@ -6,10 +6,10 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
-const cursorDot = ref(null);
-const cursorOutline = ref(null);
+const cursorDot = ref<HTMLElement | null>(null);
+const cursorOutline = ref<HTMLElement | null>(null);
 
-const handleMouseMove = (e) => {
+const handleMouseMove = (e: MouseEvent) => {
   const posX = e.clientX;
   const posY = e.clientY;
 
@@ -70,6 +70,11 @@ onBeforeUnmount(() => {
   height: 30px;
   border: 2px solid hsla(0, 0%, 0%, 0.5);
 }
+
+.cursor-outline:hover {
+  border: 2px solid hsla(0, 0%, 0%, 0.5);
+}
+
 .cursor-dot,
 .cursor-outline {
   position: fixed;

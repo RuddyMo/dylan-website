@@ -4,19 +4,21 @@
       <div class="max-w-[90%] mx-auto">
         <div class="flex justify-center gap-4 mb-2">
           <button
+            @click="typeSelected = 'archi'"
             class="relative px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
           >
             Architecture
           </button>
           <button
+            @click="typeSelected = 'voyage'"
             class="relative px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
           >
             Voyage
           </button>
         </div>
         <div class="grid-gallery">
-          <div v-if="loading" v-for="(image, index) in images" :key="index" class="grid-item" @click="openModal" :class="loading ? '' : 'hidden'">
-            <NuxtImg :src="image.url" alt="gal" class="cursor-pointer" quality="60" />
+          <div v-if="loading" v-for="(image, index) in filteredImages" :key="index" class="grid-item" @click="openModal" :class="loading ? '' : 'hidden'">
+            <NuxtImg :src="image.url" alt="gal" quality="60" />
           </div>
           <div class="grid w-full grid-cols-12 gap-4" v-else>
             <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300"></div>
@@ -98,6 +100,16 @@ const images = shuffleArray([
   { url: 'img/index/44.JPG', type: 'archi' },
   { url: 'img/index/45.JPG', type: 'archi' }
 ]);
+
+const typeSelected = ref<string | null>(null);
+
+const filteredImages = computed(() => {
+  if (!!typeSelected.value) {
+    return images.filter((image) => image.type === typeSelected.value);
+  } else {
+    return images;
+  }
+});
 
 const selectedImage = ref<string | null>(null);
 

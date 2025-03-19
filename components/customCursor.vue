@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
   left: 0;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  z-index: 50;
+  z-index: 60;
   pointer-events: none;
 }
 

@@ -1,8 +1,9 @@
 <template>
-  <div class="relative h-[calc(100vh-32px)] overflow-hidden" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+  <div class="relative h-[calc(100vh-32px)] overflow-hidden" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @contextmenu.prevent>
     <div ref="container" class="absolute flex h-full w-full transition-transform duration-300 ease-out gap-x-4" :style="{ transform: `translateX(-${scrollPosition}px)` }">
-      <div v-for="(image, index) in images" :key="index" class="flex justify-center items-center min-w-full">
-        <NuxtImg :src="image" class="h-full w-auto object-contain" alt="Slide image" />
+      <div v-for="(image, index) in images" :key="index" class="flex justify-center items-center min-w-full relative">
+        <NuxtImg :src="image" class="h-full w-auto object-contain pointer-events-none select-none" alt="Slide image" draggable="false" style="-webkit-user-drag: none" />
+        <div class="absolute inset-0 z-10"></div>
       </div>
     </div>
   </div>
@@ -42,11 +43,18 @@ onMounted(() => {
   screenHeight.value = window.innerHeight;
   window.addEventListener('wheel', handleScroll, { passive: false });
   window.addEventListener('resize', handleResize);
+
+  document.addEventListener('dragstart', (e) => {
+    if (e.target instanceof HTMLImageElement) {
+      e.preventDefault();
+    }
+  });
 });
 
 onUnmounted(() => {
   window.removeEventListener('wheel', handleScroll);
   window.removeEventListener('resize', handleResize);
+  document.removeEventListener('dragstart', null);
 });
 
 const handleResize = () => {
@@ -83,3 +91,14 @@ const updateScrollPosition = (delta) => {
   scrollPosition.value = Math.max(0, Math.min(maxScroll, scrollPosition.value + delta));
 };
 </script>
+
+<style scoped>
+.select-none {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+</style>

@@ -1,24 +1,24 @@
 <template>
-  <div>
+  <div @contextmenu.prevent>
     <NuxtLayout name="navbar">
       <div class="max-w-[90%] mx-auto">
         <div class="flex justify-center gap-4 mb-2">
           <button
             @click="typeSelected = 'archi'"
-            class="relative px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
+            class="text-sm relative px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
           >
             Architecture
           </button>
           <button
             @click="typeSelected = 'voyage'"
-            class="relative px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
+            class="text-sm relative px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
           >
             Voyage
           </button>
         </div>
         <div class="grid-gallery">
-          <div v-if="loading" v-for="(image, index) in filteredImages" :key="index" class="grid-item" @click="openModal" :class="loading ? '' : 'hidden'">
-            <NuxtImg :src="image.url" alt="gal" quality="60" />
+          <div v-if="loading" v-for="(image, index) in filteredImages" :key="index" class="grid-item" @click="openModal($event, image.url)" :class="loading ? '' : 'hidden'">
+            <NuxtImg :src="image.url" alt="gal" quality="60" class="select-none" draggable="false" style="-webkit-user-drag: none" />
           </div>
           <div class="grid w-full grid-cols-12 gap-4" v-else>
             <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300"></div>
@@ -37,8 +37,8 @@
       </div>
 
       <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90" @click="closeModal">
-        <div class="relative max-h-[90vh] max-w-[90vw]">
-          <NuxtImg :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain" quality="100" />
+        <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
+          <NuxtImg :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain select-none" quality="100" draggable="false" style="-webkit-user-drag: none" />
           <button @click="closeModal" class="absolute -top-10 right-0 p-2 text-white hover:text-gray-300">Fermer</button>
         </div>
       </div>
@@ -113,8 +113,8 @@ const filteredImages = computed(() => {
 
 const selectedImage = ref<string | null>(null);
 
-const openModal = ($event: MouseEvent) => {
-  selectedImage.value = ($event.target as HTMLImageElement).src;
+const openModal = (_event: MouseEvent, imageUrl: string) => {
+  selectedImage.value = imageUrl;
   document.body.style.overflow = 'hidden';
 };
 
@@ -131,20 +131,34 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 onMounted(() => {
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && selectedImage.value) {
-      closeModal();
-    }
-  });
+  window.addEventListener('keydown', handleKeyDown);
+  document.addEventListener('dragstart', preventImageDrag);
+  document.addEventListener('copy', preventImageCopy);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && selectedImage.value) {
-      closeModal();
-    }
-  });
+  window.removeEventListener('keydown', handleKeyDown);
+  document.removeEventListener('dragstart', preventImageDrag);
+  document.removeEventListener('copy', preventImageCopy);
 });
+
+function handleKeyDown(e: KeyboardEvent) {
+  if (e.key === 'Escape' && selectedImage.value) {
+    closeModal();
+  }
+}
+
+function preventImageDrag(e: Event) {
+  if (e.target instanceof HTMLImageElement) {
+    e.preventDefault();
+  }
+}
+
+function preventImageCopy(e: Event) {
+  if (e.target instanceof HTMLImageElement) {
+    e.preventDefault();
+  }
+}
 </script>
 
 <style scoped>
@@ -158,6 +172,7 @@ onUnmounted(() => {
 .grid-item {
   position: relative;
   grid-column: span 3;
+  cursor: pointer;
 }
 
 .grid-item.normal {
@@ -180,6 +195,8 @@ onUnmounted(() => {
   min-height: 10rem;
   object-fit: cover;
   transition: opacity 0.3s ease;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
 .grid-item.large img {
@@ -188,5 +205,14 @@ onUnmounted(() => {
 
 .grid-item img:hover {
   opacity: 0.9;
+}
+
+.select-none {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 </style>

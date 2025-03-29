@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Verdana', 'sans-serif']
+        sans: ['Poppins', 'sans-serif']
       }
     }
   },

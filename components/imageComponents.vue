@@ -1,9 +1,11 @@
 <template>
-  <div class="relative h-[calc(100vh-32px)] overflow-hidden" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @contextmenu.prevent>
-    <div ref="container" class="absolute flex h-full w-full transition-transform duration-300 ease-out gap-x-4" :style="{ transform: `translateX(-${scrollPosition}px)` }">
-      <div v-for="(image, index) in images" :key="index" class="flex justify-center items-center min-w-full relative">
-        <NuxtImg :src="image" class="h-full w-auto object-contain pointer-events-none select-none" alt="Slide image" draggable="false" style="-webkit-user-drag: none" />
-        <div class="absolute inset-0 z-10"></div>
+  <div class="bg-white">
+    <div class="relative h-[calc(100vh-32px)] overflow-hidden" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @contextmenu.prevent>
+      <div ref="container" class="absolute flex h-full w-full transition-transform duration-300 ease-out gap-x-4" :style="{ transform: `translateX(-${scrollPosition}px)` }">
+        <div v-for="(image, index) in images" :key="index" class="flex justify-center items-center min-w-full relative">
+          <NuxtImg :src="image" class="h-full w-auto object-contain pointer-events-none select-none" alt="Slide image" draggable="false" style="-webkit-user-drag: none" />
+          <div class="absolute inset-0 z-10"></div>
+        </div>
       </div>
     </div>
   </div>

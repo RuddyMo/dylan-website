@@ -1,6 +1,6 @@
 <template>
-  <div @contextmenu.prevent>
-    <NuxtLayout name="navbar">
+  <div @contextmenu.prevent class="bg-white">
+    <NuxtLayout name="navbar" class="">
       <div class="max-w-[90%] mx-auto">
         <div class="flex justify-center gap-4 mb-2">
           <button
@@ -172,7 +172,6 @@ function preventImageCopy(e: Event) {
 .grid-item {
   position: relative;
   grid-column: span 3;
-  cursor: pointer;
 }
 
 .grid-item.normal {

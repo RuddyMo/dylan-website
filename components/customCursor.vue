@@ -1,82 +1,62 @@
 <template>
-  <div ref="cursorDot" class="cursor-dot"></div>
-  <div ref="cursorOutline" class="cursor-outline"></div>
+  <div ref="cursor" class="cursor-round"></div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
-const cursorDot = ref<HTMLElement | null>(null);
-const cursorOutline = ref<HTMLElement | null>(null);
+const cursor = ref<HTMLElement | null>(null);
+
+let hideCursorTimeout: ReturnType<typeof setTimeout> | undefined;
 
 const handleMouseMove = (e: MouseEvent) => {
   const posX = e.clientX;
   const posY = e.clientY;
 
-  if (cursorDot.value) {
-    cursorDot.value.style.left = `${posX}px`;
-    cursorDot.value.style.top = `${posY}px`;
+  if (cursor.value) {
+    cursor.value.style.left = `${posX}px`;
+    cursor.value.style.top = `${posY}px`;
+
+    cursor.value.style.opacity = '1';
   }
 
-  if (cursorOutline.value) {
-    cursorOutline.value.animate(
-      {
-        left: `${posX}px`,
-        top: `${posY}px`
-      },
-      {
-        duration: 300,
-        fill: 'forwards'
-      }
-    );
-  }
+  resetCursorTimer();
 };
 
-const showCustomCursor = () => {
-  if (import.meta.client) {
-    document.body.classList.add('cursor-none');
+const resetCursorTimer = () => {
+  if (hideCursorTimeout !== undefined) {
+    clearTimeout(hideCursorTimeout);
   }
-};
 
-const restoreDefaultCursor = () => {
-  if (import.meta.client) {
-    document.body.classList.remove('cursor-none');
-  }
+  hideCursorTimeout = setTimeout(() => {
+    if (cursor.value) {
+      cursor.value.style.opacity = '0';
+    }
+  }, 2000);
 };
 
 onMounted(() => {
-  if (import.meta.client) {
+  if (typeof window !== 'undefined') {
     window.addEventListener('mousemove', handleMouseMove);
-    showCustomCursor();
+    document.body.classList.add('cursor-none');
   }
 });
 
 onBeforeUnmount(() => {
-  if (import.meta.client) {
+  if (typeof window !== 'undefined') {
     window.removeEventListener('mousemove', handleMouseMove);
-    restoreDefaultCursor();
+    document.body.classList.remove('cursor-none');
   }
 });
 </script>
 
 <style scoped>
-.cursor-dot {
-  width: 5px;
-  height: 5px;
-  background-color: black;
-}
-.cursor-outline {
-  width: 30px;
-  height: 30px;
-  border: 2px solid hsla(0, 0%, 0%, 0.5);
-}
-
-.cursor-outline:hover {
-  border: 2px solid hsla(0, 0%, 0%, 0.5);
-}
-
-.cursor-dot,
-.cursor-outline {
+.cursor-round {
+  width: 15px;
+  height: 15px;
+  background: black;
+  filter: invert(1);
+  mix-blend-mode: difference;
   position: fixed;
   top: 0;
   left: 0;
@@ -84,6 +64,8 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   z-index: 60;
   pointer-events: none;
+  transition: opacity 0.2s;
+  opacity: 1;
 }
 
 :global(.cursor-none) {

@@ -16,29 +16,29 @@
             Voyage
           </button>
         </div>
-        <div class="grid-gallery">
-          <div v-if="loading" v-for="(image, index) in filteredImages" :key="index" class="grid-item" @click="openModal($event, image.url)" :class="loading ? '' : 'hidden'">
+        <div v-show="!loaded" class="grid w-full grid-cols-12 gap-4">
+          <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-start-2 col-span-4 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
+        </div>
+        <div class="grid-gallery" v-show="loaded">
+          <div v-for="(image, index) in filteredImages" :key="index" class="grid-item" @click="openModal($event, image.url)">
             <NuxtImg :src="image.url" alt="gal" quality="60" class="select-none" draggable="false" style="-webkit-user-drag: none" />
-          </div>
-          <div class="grid w-full grid-cols-12 gap-4" v-else>
-            <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300"></div>
-            <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
-            <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
-            <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
-            <div class="animate-pulse col-start-2 col-span-4 h-80 w-full bg-gray-300"></div>
-            <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
-            <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
-            <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
-            <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300"></div>
-            <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
-            <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
           </div>
         </div>
       </div>
 
       <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90" @click="closeModal">
         <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
-          <NuxtImg :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain select-none" quality="100" draggable="false" style="-webkit-user-drag: none" />
+          <NuxtImg :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain select-none" quality="70" draggable="false" style="-webkit-user-drag: none" />
           <button @click="closeModal" class="absolute -top-10 right-0 p-2 text-white hover:text-gray-300">Fermer</button>
         </div>
       </div>
@@ -47,12 +47,13 @@
 </template>
 
 <script lang="ts" setup>
-const loading = ref(false);
+const loaded = ref(false);
 
-setTimeout(() => {
-  loading.value = true;
-}, 1200);
-
+onMounted(() => {
+  setTimeout(() => {
+    loaded.value = true;
+  }, 1000);
+});
 const images = shuffleArray([
   { url: 'img/index/1.JPG', type: 'archi' },
   { url: 'img/index/2.JPG', type: 'voyage' },

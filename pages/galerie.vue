@@ -30,7 +30,7 @@
           <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
         </div>
         <div class="grid-gallery" v-show="loaded">
-          <div v-for="(image, index) in filteredImages" :key="index" class="grid-item" @click="openModal($event, image.url)">
+          <div v-for="(image, index) in filteredImages" :key="image.url" class="grid-item" @click="openModal($event, image.url)">
             <NuxtImg :src="image.url" alt="gal" quality="60" class="select-none" draggable="false" style="-webkit-user-drag: none" />
           </div>
         </div>

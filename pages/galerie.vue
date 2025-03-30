@@ -15,6 +15,12 @@
           >
             Voyage
           </button>
+          <button
+            @click="typeSelected = 'art'"
+            class="text-sm relative px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
+          >
+            Art
+          </button>
         </div>
         <div v-show="!loaded" class="grid w-full grid-cols-12 gap-4">
           <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300"></div>
@@ -30,8 +36,8 @@
           <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
         </div>
         <div class="grid-gallery" v-show="loaded">
-          <div v-for="(image, index) in filteredImages" :key="image.url" class="grid-item" @click="openModal($event, image.url)">
-            <NuxtImg :src="image.url" alt="gal" quality="60" class="select-none" draggable="false" style="-webkit-user-drag: none" />
+          <div v-for="image in filteredImages" :key="image.url" class="grid-item" @click="openModal($event, image.url)">
+            <NuxtImg :src="image.url" alt="gal" quality="70" class="select-none" draggable="false" style="-webkit-user-drag: none" />
           </div>
         </div>
       </div>

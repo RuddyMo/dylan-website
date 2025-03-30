@@ -47,9 +47,16 @@
 </template>
 
 <script lang="ts" setup>
-const loaded = ref(false);
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
-const images = [
+interface Image {
+  url: string;
+  type: string;
+}
+
+const loaded = ref<boolean>(false);
+
+const images: Image[] = [
   { url: 'img/index/1.JPG', type: 'archi' },
   { url: 'img/index/2.JPG', type: 'voyage' },
   { url: 'img/index/3.JPG', type: 'archi' },
@@ -97,61 +104,100 @@ const images = [
   { url: 'img/index/45.JPG', type: 'archi' }
 ];
 
+const shuffledImages = ref<Image[]>([]);
 const typeSelected = ref<string | null>(null);
+
+function shuffleArray(array: Image[]): Image[] {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
+
+function saveOrderToCookie(shuffledOrder: Image[]): void {
+  const orderIndices = shuffledOrder.map((img) => images.findIndex((origImg) => origImg.url === img.url));
+  document.cookie = `imageOrder=${JSON.stringify(orderIndices)};max-age=${60 * 60 * 24 * 30};path=/`;
+}
+
+function getOrderFromCookie(): Image[] | null {
+  const cookies = document.cookie.split(';');
+  const orderCookie = cookies.find((cookie) => cookie.trim().startsWith('imageOrder='));
+
+  if (orderCookie) {
+    try {
+      const orderIndices = JSON.parse(orderCookie.split('=')[1]);
+      return orderIndices.map((index: number) => images[index]);
+    } catch (e) {
+      console.error('Erreur lors de la lecture du cookie:', e);
+      return null;
+    }
+  }
+  return null;
+}
 
 const filteredImages = computed(() => {
   if (typeSelected.value) {
-    return images.filter((image) => image.type === typeSelected.value);
+    return shuffledImages.value.filter((image) => image.type === typeSelected.value);
   }
-  return images;
+  return shuffledImages.value;
 });
 
 const selectedImage = ref<string | null>(null);
 
-const openModal = (_event: MouseEvent, imageUrl: string) => {
+const openModal = (_event: MouseEvent, imageUrl: string): void => {
   selectedImage.value = imageUrl;
   document.body.style.overflow = 'hidden';
 };
 
-const closeModal = () => {
+const closeModal = (): void => {
   selectedImage.value = null;
   document.body.style.overflow = 'auto';
 };
 
+function handleKeyDown(e: KeyboardEvent): void {
+  if (e.key === 'Escape' && selectedImage.value) {
+    closeModal();
+  }
+}
+
+function preventImageDrag(e: Event): void {
+  if (e.target instanceof HTMLImageElement) {
+    e.preventDefault();
+  }
+}
+
+function preventImageCopy(e: Event): void {
+  if (e.target instanceof HTMLImageElement) {
+    e.preventDefault();
+  }
+}
+
 onMounted(() => {
+  const savedOrder = getOrderFromCookie();
+
+  if (savedOrder) {
+    shuffledImages.value = savedOrder;
+  } else {
+    const shuffled = shuffleArray([...images]);
+    shuffledImages.value = shuffled;
+    saveOrderToCookie(shuffled);
+  }
+
   window.addEventListener('keydown', handleKeyDown);
   document.addEventListener('dragstart', preventImageDrag);
   document.addEventListener('copy', preventImageCopy);
+
+  setTimeout(() => {
+    loaded.value = true;
+  }, 1000);
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown);
   document.removeEventListener('dragstart', preventImageDrag);
   document.removeEventListener('copy', preventImageCopy);
-});
-
-function handleKeyDown(e: KeyboardEvent) {
-  if (e.key === 'Escape' && selectedImage.value) {
-    closeModal();
-  }
-}
-
-function preventImageDrag(e: Event) {
-  if (e.target instanceof HTMLImageElement) {
-    e.preventDefault();
-  }
-}
-
-function preventImageCopy(e: Event) {
-  if (e.target instanceof HTMLImageElement) {
-    e.preventDefault();
-  }
-}
-
-onMounted(() => {
-  setTimeout(() => {
-    loaded.value = true;
-  }, 1000);
 });
 </script>
 

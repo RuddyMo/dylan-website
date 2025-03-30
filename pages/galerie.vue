@@ -49,12 +49,7 @@
 <script lang="ts" setup>
 const loaded = ref(false);
 
-onMounted(() => {
-  setTimeout(() => {
-    loaded.value = true;
-  }, 1000);
-});
-const images = shuffleArray([
+const images = [
   { url: 'img/index/1.JPG', type: 'archi' },
   { url: 'img/index/2.JPG', type: 'voyage' },
   { url: 'img/index/3.JPG', type: 'archi' },
@@ -100,16 +95,15 @@ const images = shuffleArray([
   { url: 'img/index/43.JPG', type: 'archi' },
   { url: 'img/index/44.JPG', type: 'archi' },
   { url: 'img/index/45.JPG', type: 'archi' }
-]);
+];
 
 const typeSelected = ref<string | null>(null);
 
 const filteredImages = computed(() => {
-  if (!!typeSelected.value) {
+  if (typeSelected.value) {
     return images.filter((image) => image.type === typeSelected.value);
-  } else {
-    return images;
   }
+  return images;
 });
 
 const selectedImage = ref<string | null>(null);
@@ -123,13 +117,6 @@ const closeModal = () => {
   selectedImage.value = null;
   document.body.style.overflow = 'auto';
 };
-
-function shuffleArray<T>(array: T[]): T[] {
-  return array
-    .map((value) => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
-}
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown);
@@ -160,6 +147,12 @@ function preventImageCopy(e: Event) {
     e.preventDefault();
   }
 }
+
+onMounted(() => {
+  setTimeout(() => {
+    loaded.value = true;
+  }, 1000);
+});
 </script>
 
 <style scoped>

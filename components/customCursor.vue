@@ -16,7 +16,6 @@ const handleMouseMove = (e: MouseEvent) => {
   if (cursor.value) {
     cursor.value.style.left = `${posX}px`;
     cursor.value.style.top = `${posY}px`;
-
     cursor.value.style.opacity = '1';
   }
 
@@ -35,10 +34,28 @@ const resetCursorTimer = () => {
   }, 2000);
 };
 
+const handleMouseEnter = () => {
+  if (cursor.value) {
+    cursor.value.classList.add('cursor-grow');
+  }
+};
+
+const handleMouseLeave = () => {
+  if (cursor.value) {
+    cursor.value.classList.remove('cursor-grow');
+  }
+};
+
 onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('mousemove', handleMouseMove);
     document.body.classList.add('cursor-none');
+
+    const links = document.querySelectorAll('a, button');
+    links.forEach((link) => {
+      link.addEventListener('mouseenter', handleMouseEnter);
+      link.addEventListener('mouseleave', handleMouseLeave);
+    });
   }
 });
 
@@ -46,6 +63,12 @@ onBeforeUnmount(() => {
   if (typeof window !== 'undefined') {
     window.removeEventListener('mousemove', handleMouseMove);
     document.body.classList.remove('cursor-none');
+
+    const links = document.querySelectorAll('a, button');
+    links.forEach((link) => {
+      link.removeEventListener('mouseenter', handleMouseEnter);
+      link.removeEventListener('mouseleave', handleMouseLeave);
+    });
   }
 });
 </script>
@@ -64,11 +87,22 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   z-index: 60;
   pointer-events: none;
-  transition: opacity 0.2s;
+  transition:
+    opacity 0.2s,
+    transform 0.2s ease-in-out;
   opacity: 1;
 }
 
 :global(.cursor-none) {
+  cursor: none;
+}
+
+.cursor-grow {
+  transform: translate(-50%, -50%) scale(2);
+}
+
+a,
+button {
   cursor: none;
 }
 </style>

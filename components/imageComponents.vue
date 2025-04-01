@@ -21,20 +21,20 @@ const touchStartY = ref(0);
 const initialScrollPosition = ref(0);
 
 const images = ref([
-  'img/accueil/1.JPG',
-  'img/accueil/2.JPG',
-  'img/accueil/3.JPG',
-  'img/accueil/4.JPG',
-  'img/accueil/5.JPG',
-  'img/accueil/6.JPG',
-  'img/accueil/7.JPG',
-  'img/accueil/8.JPG',
-  'img/accueil/9.JPG',
-  'img/accueil/10.JPG',
-  'img/accueil/11.JPG',
-  'img/accueil/12.JPG',
-  'img/accueil/13.JPG',
-  'img/accueil/14.JPG'
+  'img/accueil/1.webp',
+  'img/accueil/2.webp',
+  'img/accueil/3.webp',
+  'img/accueil/4.webp',
+  'img/accueil/5.webp',
+  'img/accueil/6.webp',
+  'img/accueil/7.webp',
+  'img/accueil/8.webp',
+  'img/accueil/9.webp',
+  'img/accueil/10.webp',
+  'img/accueil/11.webp',
+  'img/accueil/12.webp',
+  'img/accueil/13.webp',
+  'img/accueil/14.webp'
 ]);
 
 const container = ref(null);

@@ -3,11 +3,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 const cursor = ref<HTMLElement | null>(null);
+const route = useRoute();
 
 let hideCursorTimeout: ReturnType<typeof setTimeout> | undefined;
+let enlargeTimeout: ReturnType<typeof setTimeout> | undefined;
 
 const handleMouseMove = (e: MouseEvent) => {
   const posX = e.clientX;
@@ -34,28 +37,45 @@ const resetCursorTimer = () => {
   }, 2000);
 };
 
-const handleMouseEnter = () => {
-  if (cursor.value) {
-    cursor.value.classList.add('cursor-grow');
+const handleMouseEnter = (e: Event) => {
+  const target = e.target as HTMLElement;
+
+  if (target && (target.tagName.toLowerCase() === 'a' || target.tagName.toLowerCase() === 'button')) {
+    if (cursor.value) {
+      cursor.value.classList.add('cursor-grow');
+    }
+
+    if (enlargeTimeout !== undefined) {
+      clearTimeout(enlargeTimeout);
+    }
   }
 };
 
-const handleMouseLeave = () => {
+const handleMouseLeave = (e: Event) => {
+  const target = e.target as HTMLElement;
+
+  if (target && (target.tagName.toLowerCase() === 'a' || target.tagName.toLowerCase() === 'button')) {
+    enlargeTimeout = setTimeout(() => {
+      if (cursor.value) {
+        cursor.value.classList.remove('cursor-grow');
+      }
+    }, 200);
+  }
+};
+
+watch(route, () => {
   if (cursor.value) {
     cursor.value.classList.remove('cursor-grow');
   }
-};
+});
 
 onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('mousemove', handleMouseMove);
     document.body.classList.add('cursor-none');
 
-    const links = document.querySelectorAll('a, button');
-    links.forEach((link) => {
-      link.addEventListener('mouseenter', handleMouseEnter);
-      link.addEventListener('mouseleave', handleMouseLeave);
-    });
+    document.addEventListener('mouseenter', handleMouseEnter, true);
+    document.addEventListener('mouseleave', handleMouseLeave, true);
   }
 });
 
@@ -64,11 +84,8 @@ onBeforeUnmount(() => {
     window.removeEventListener('mousemove', handleMouseMove);
     document.body.classList.remove('cursor-none');
 
-    const links = document.querySelectorAll('a, button');
-    links.forEach((link) => {
-      link.removeEventListener('mouseenter', handleMouseEnter);
-      link.removeEventListener('mouseleave', handleMouseLeave);
-    });
+    document.removeEventListener('mouseenter', handleMouseEnter, true);
+    document.removeEventListener('mouseleave', handleMouseLeave, true);
   }
 });
 </script>

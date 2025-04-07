@@ -1,6 +1,6 @@
 <template>
   <div @contextmenu.prevent class="bg-white">
-    <NuxtLayout name="navbar" class="">
+    <NuxtLayout name="navbar">
       <div class="max-w-[90%] mx-auto">
         <div class="flex justify-center gap-4 mb-2">
           <button

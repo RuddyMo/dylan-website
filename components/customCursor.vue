@@ -21,7 +21,6 @@ const handleMouseMove = (e: MouseEvent) => {
     cursor.value.style.top = `${posY}px`;
     cursor.value.style.opacity = '1';
   }
-
   resetCursorTimer();
 };
 
@@ -29,7 +28,6 @@ const resetCursorTimer = () => {
   if (hideCursorTimeout !== undefined) {
     clearTimeout(hideCursorTimeout);
   }
-
   hideCursorTimeout = setTimeout(() => {
     if (cursor.value) {
       cursor.value.style.opacity = '0';
@@ -39,12 +37,10 @@ const resetCursorTimer = () => {
 
 const handleMouseEnter = (e: Event) => {
   const target = e.target as HTMLElement;
-
-  if (target && (target.tagName.toLowerCase() === 'a' || target.tagName.toLowerCase() === 'button')) {
+  if (target.closest('a, button, nav')) {
     if (cursor.value) {
       cursor.value.classList.add('cursor-grow');
     }
-
     if (enlargeTimeout !== undefined) {
       clearTimeout(enlargeTimeout);
     }
@@ -53,8 +49,7 @@ const handleMouseEnter = (e: Event) => {
 
 const handleMouseLeave = (e: Event) => {
   const target = e.target as HTMLElement;
-
-  if (target && (target.tagName.toLowerCase() === 'a' || target.tagName.toLowerCase() === 'button')) {
+  if (target.closest('a, button, nav')) {
     enlargeTimeout = setTimeout(() => {
       if (cursor.value) {
         cursor.value.classList.remove('cursor-grow');
@@ -74,8 +69,8 @@ onMounted(() => {
     window.addEventListener('mousemove', handleMouseMove);
     document.body.classList.add('cursor-none');
 
-    document.addEventListener('mouseenter', handleMouseEnter, true);
-    document.addEventListener('mouseleave', handleMouseLeave, true);
+    document.addEventListener('mouseover', handleMouseEnter, true);
+    document.addEventListener('mouseout', handleMouseLeave, true);
   }
 });
 
@@ -84,8 +79,8 @@ onBeforeUnmount(() => {
     window.removeEventListener('mousemove', handleMouseMove);
     document.body.classList.remove('cursor-none');
 
-    document.removeEventListener('mouseenter', handleMouseEnter, true);
-    document.removeEventListener('mouseleave', handleMouseLeave, true);
+    document.removeEventListener('mouseover', handleMouseEnter, true);
+    document.removeEventListener('mouseout', handleMouseLeave, true);
   }
 });
 </script>

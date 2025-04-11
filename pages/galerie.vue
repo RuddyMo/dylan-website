@@ -208,22 +208,18 @@ const images: Image[] = [
   { url: 'img/galerie/archi/38.webp', type: 'archi' },
   { url: 'img/galerie/voyage/60.webp', type: 'voyage' },
   { url: 'img/galerie/archi/8.webp', type: 'archi' },
-  { url: 'img/galerie/art/6.webp', type: 'art' },
   { url: 'img/galerie/voyage/1.webp', type: 'voyage' },
   { url: 'img/galerie/archi/42.webp', type: 'archi' },
   { url: 'img/galerie/voyage/65.webp', type: 'voyage' },
   { url: 'img/galerie/archi/21.webp', type: 'archi' },
-  { url: 'img/galerie/art/6.webp', type: 'art' },
   { url: 'img/galerie/voyage/48.webp', type: 'voyage' },
   { url: 'img/galerie/archi/6.webp', type: 'archi' },
   { url: 'img/galerie/voyage/93.webp', type: 'voyage' },
   { url: 'img/galerie/archi/54.webp', type: 'archi' },
-  { url: 'img/galerie/art/21.webp', type: 'art' },
   { url: 'img/galerie/voyage/28.webp', type: 'voyage' },
   { url: 'img/galerie/archi/33.webp', type: 'archi' },
   { url: 'img/galerie/voyage/75.webp', type: 'voyage' },
   { url: 'img/galerie/archi/45.webp', type: 'archi' },
-  { url: 'img/galerie/art/6.webp', type: 'art' },
   { url: 'img/galerie/voyage/15.webp', type: 'voyage' },
   { url: 'img/galerie/archi/24.webp', type: 'archi' },
   { url: 'img/galerie/voyage/58.webp', type: 'voyage' },
@@ -261,10 +257,8 @@ const images: Image[] = [
   { url: 'img/galerie/voyage/72.webp', type: 'voyage' },
   { url: 'img/galerie/voyage/27.webp', type: 'voyage' },
   { url: 'img/galerie/voyage/11.webp', type: 'voyage' },
-  { url: 'img/galerie/voyage/21.webp', type: 'voyage' },
   { url: 'img/galerie/voyage/49.webp', type: 'voyage' },
-  { url: 'img/galerie/voyage/84.webp', type: 'voyage' },
-  { url: 'img/galerie/voyage/21.webp', type: 'voyage' }
+  { url: 'img/galerie/voyage/84.webp', type: 'voyage' }
 ];
 
 const typeSelected = ref<string>('archi');

@@ -2,7 +2,6 @@
   <div class="bg-white min-h-screen">
     <NuxtLayout name="navbar">
       <div class="flex flex-col lg:flex-row items-center justify-center py-20 px-4">
-        <!-- Bloc image avec effet de décalage -->
         <div class="relative inline-block mb-8 lg:mb-0">
           <div class="absolute top-10 right-10 w-[calc(100%+2rem)] h-[calc(100%+2rem)] bg-black z-10"></div>
           <NuxtImg src="/img/about/APROPOS.jpg" alt="Photo" class="relative w-[400px] h-[480px] object-cover z-20" />

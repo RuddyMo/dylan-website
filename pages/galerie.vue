@@ -1,34 +1,34 @@
 <template>
-  <div @contextmenu.prevent class="bg-white">
+  <div class="bg-white" @contextmenu.prevent>
     <NuxtLayout name="navbar" class="">
       <div class="max-w-[90%] mx-auto">
         <div class="flex justify-center gap-4 mb-2">
           <button
             v-for="(button, index) in buttons"
             :key="index"
-            @click="typeSelected = button.type"
             class="text-sm relative cursor-none px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
             :class="{ 'font-bold': typeSelected === button.type }"
+            @click="typeSelected = button.type"
           >
             {{ button.label }}
           </button>
         </div>
         <div v-show="!loaded" class="grid w-full grid-cols-12 gap-4">
-          <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300"></div>
-          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
-          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
-          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
-          <div class="animate-pulse col-start-2 col-span-4 h-80 w-full bg-gray-300"></div>
-          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
-          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
-          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300"></div>
-          <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300"></div>
-          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
-          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300"></div>
+          <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300" />
+          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
+          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
+          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300" />
+          <div class="animate-pulse col-start-2 col-span-4 h-80 w-full bg-gray-300" />
+          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
+          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
+          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
+          <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300" />
+          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300" />
+          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300" />
         </div>
-        <div class="grid-gallery" v-show="loaded">
+        <div v-show="loaded" class="grid-gallery">
           <div v-for="image in filteredImages" :key="image.url" class="grid-item" @click="openModal($event, image.url)">
-            <NuxtImg :src="image.url" alt="gal" quality="70" class="select-none" draggable="false" style="-webkit-user-drag: none" />
+            <NuxtImg :src="image.url" alt="gal" quality="10" class="select-none" draggable="false" style="-webkit-user-drag: none" />
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
       <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90" @click="closeModal">
         <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
           <NuxtImg :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain select-none" quality="70" draggable="false" style="-webkit-user-drag: none" />
-          <button @click="closeModal" class="absolute -top-10 right-0 p-2 text-white hover:text-gray-300">Fermer</button>
+          <button class="absolute -top-10 right-0 p-2 text-white hover:text-gray-300" @click="closeModal">Fermer</button>
         </div>
       </div>
     </NuxtLayout>
@@ -62,25 +62,33 @@ const loaded = ref<boolean>(false);
 const images: Image[] = [
   { url: 'img/galerie/voyage/81.webp', type: 'voyage' },
   { url: 'img/galerie/archi/23.webp', type: 'archi' },
+  { url: 'img/galerie/archi/74.webp', type: 'archi' },
   { url: 'img/galerie/voyage/54.webp', type: 'voyage' },
   { url: 'img/galerie/art/14.webp', type: 'art' },
+  { url: 'img/galerie/archi/85.webp', type: 'archi' },
   { url: 'img/galerie/voyage/17.webp', type: 'voyage' },
   { url: 'img/galerie/archi/39.webp', type: 'archi' },
   { url: 'img/galerie/voyage/73.webp', type: 'voyage' },
+  { url: 'img/galerie/archi/78.webp', type: 'archi' },
   { url: 'img/galerie/art/26.webp', type: 'art' },
   { url: 'img/galerie/voyage/68.webp', type: 'voyage' },
+  { url: 'img/galerie/archi/40.webp', type: 'archi' },
   { url: 'img/galerie/archi/9.webp', type: 'archi' },
   { url: 'img/galerie/voyage/47.webp', type: 'voyage' },
   { url: 'img/galerie/archi/71.webp', type: 'archi' },
   { url: 'img/galerie/art/4.webp', type: 'art' },
   { url: 'img/galerie/voyage/12.webp', type: 'voyage' },
   { url: 'img/galerie/archi/47.webp', type: 'archi' },
+  { url: 'img/galerie/archi/82.webp', type: 'archi' },
   { url: 'img/galerie/voyage/94.webp', type: 'voyage' },
   { url: 'img/galerie/archi/55.webp', type: 'archi' },
+  { url: 'img/galerie/archi/91.webp', type: 'archi' },
   { url: 'img/galerie/voyage/29.webp', type: 'voyage' },
   { url: 'img/galerie/art/7.webp', type: 'art' },
+  { url: 'img/galerie/archi/76.webp', type: 'archi' },
   { url: 'img/galerie/voyage/3.webp', type: 'voyage' },
   { url: 'img/galerie/archi/43.webp', type: 'archi' },
+  { url: 'img/galerie/archi/89.webp', type: 'archi' },
   { url: 'img/galerie/voyage/79.webp', type: 'voyage' },
   { url: 'img/galerie/archi/66.webp', type: 'archi' },
   { url: 'img/galerie/art/19.webp', type: 'art' },
@@ -88,21 +96,27 @@ const images: Image[] = [
   { url: 'img/galerie/archi/3.webp', type: 'archi' },
   { url: 'img/galerie/voyage/76.webp', type: 'voyage' },
   { url: 'img/galerie/archi/68.webp', type: 'archi' },
+  { url: 'img/galerie/archi/77.webp', type: 'archi' },
   { url: 'img/galerie/art/10.webp', type: 'art' },
   { url: 'img/galerie/voyage/41.webp', type: 'voyage' },
   { url: 'img/galerie/archi/32.webp', type: 'archi' },
+  { url: 'img/galerie/archi/86.webp', type: 'archi' },
   { url: 'img/galerie/voyage/61.webp', type: 'voyage' },
   { url: 'img/galerie/archi/10.webp', type: 'archi' },
   { url: 'img/galerie/art/16.webp', type: 'art' },
   { url: 'img/galerie/voyage/24.webp', type: 'voyage' },
   { url: 'img/galerie/archi/57.webp', type: 'archi' },
+  { url: 'img/galerie/archi/79.webp', type: 'archi' },
   { url: 'img/galerie/voyage/86.webp', type: 'voyage' },
   { url: 'img/galerie/archi/15.webp', type: 'archi' },
+  { url: 'img/galerie/archi/92.webp', type: 'archi' },
   { url: 'img/galerie/art/28.webp', type: 'art' },
   { url: 'img/galerie/voyage/9.webp', type: 'voyage' },
   { url: 'img/galerie/archi/36.webp', type: 'archi' },
+  { url: 'img/galerie/archi/75.webp', type: 'archi' },
   { url: 'img/galerie/voyage/56.webp', type: 'voyage' },
   { url: 'img/galerie/archi/61.webp', type: 'archi' },
+  { url: 'img/galerie/archi/84.webp', type: 'archi' },
   { url: 'img/galerie/art/1.webp', type: 'art' },
   { url: 'img/galerie/voyage/34.webp', type: 'voyage' },
   { url: 'img/galerie/archi/25.webp', type: 'archi' },
@@ -111,16 +125,20 @@ const images: Image[] = [
   { url: 'img/galerie/art/22.webp', type: 'art' },
   { url: 'img/galerie/voyage/50.webp', type: 'voyage' },
   { url: 'img/galerie/archi/4.webp', type: 'archi' },
+  { url: 'img/galerie/archi/81.webp', type: 'archi' },
   { url: 'img/galerie/voyage/98.webp', type: 'voyage' },
   { url: 'img/galerie/archi/51.webp', type: 'archi' },
+  { url: 'img/galerie/archi/88.webp', type: 'archi' },
   { url: 'img/galerie/art/13.webp', type: 'art' },
   { url: 'img/galerie/voyage/26.webp', type: 'voyage' },
   { url: 'img/galerie/archi/28.webp', type: 'archi' },
   { url: 'img/galerie/voyage/91.webp', type: 'voyage' },
   { url: 'img/galerie/archi/72.webp', type: 'archi' },
+  { url: 'img/galerie/archi/80.webp', type: 'archi' },
   { url: 'img/galerie/art/2.webp', type: 'art' },
   { url: 'img/galerie/voyage/39.webp', type: 'voyage' },
   { url: 'img/galerie/archi/20.webp', type: 'archi' },
+  { url: 'img/galerie/archi/83.webp', type: 'archi' },
   { url: 'img/galerie/voyage/71.webp', type: 'voyage' },
   { url: 'img/galerie/archi/46.webp', type: 'archi' },
   { url: 'img/galerie/art/25.webp', type: 'art' },
@@ -133,9 +151,11 @@ const images: Image[] = [
   { url: 'img/galerie/archi/17.webp', type: 'archi' },
   { url: 'img/galerie/voyage/95.webp', type: 'voyage' },
   { url: 'img/galerie/archi/64.webp', type: 'archi' },
+  { url: 'img/galerie/archi/87.webp', type: 'archi' },
   { url: 'img/galerie/art/17.webp', type: 'art' },
   { url: 'img/galerie/voyage/31.webp', type: 'voyage' },
   { url: 'img/galerie/archi/34.webp', type: 'archi' },
+  { url: 'img/galerie/archi/90.webp', type: 'archi' },
   { url: 'img/galerie/voyage/88.webp', type: 'voyage' },
   { url: 'img/galerie/archi/48.webp', type: 'archi' },
   { url: 'img/galerie/art/24.webp', type: 'art' },

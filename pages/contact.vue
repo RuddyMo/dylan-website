@@ -1,5 +1,8 @@
 <template>
-  <NuxtLayout name="navbar"></NuxtLayout>
+  <div>
+    <NuxtLayout name="navbar"></NuxtLayout>
+    <InstagramFooter />
+  </div>
 </template>
 
 <script lang="ts" setup></script>

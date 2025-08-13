@@ -1,12 +1,7 @@
 <template>
-  <div class="bg-white min-h-screen">
+  <div>
     <NuxtLayout name="navbar">
-      <div class="flex flex-col lg:flex-row items-center justify-center py-20 px-4">
-        <div class="relative inline-block mb-8 lg:mb-0">
-          <div class="absolute top-10 right-10 w-[calc(100%+2rem)] h-[calc(100%+2rem)] bg-black z-10"></div>
-          <NuxtImg src="/img/about/APROPOS.jpg" alt="Photo" class="relative w-[400px] h-[480px] object-cover z-20" />
-        </div>
-
+      <div class="flex flex-col lg:flex-row items-center justify-center">
         <div class="lg:ml-12 max-w-2xl text-gray-800">
           <h3 class="text-3xl font-bold sm:mb-10 mt-20">Salut, moi c'est Dylan !</h3>
           <p class="text-lg leading-relaxed">
@@ -19,8 +14,10 @@
             dans un paysage naturel. Chaque image raconte une histoire, une interaction subtile entre l'homme et son environnement.
           </p>
         </div>
+        <NuxtImg src="/img/about/APROPOS.jpg" alt="Photo" class="relative w-auto h-[calc(100vh-4rem)] object-cover z-20" />
       </div>
     </NuxtLayout>
+    <InstagramFooter />
   </div>
 </template>
 

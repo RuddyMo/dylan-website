@@ -1,6 +1,6 @@
 <template>
   <CustomCursor />
-  <NuxtPage />
+  <NuxtPage class='bg-white' />
 </template>
 <script setup lang="ts">
 import CustomCursor from '~/components/customCursor.vue';

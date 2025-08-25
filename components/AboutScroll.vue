@@ -103,89 +103,89 @@
       <div ref="containerMobile" class="transition-transform duration-300 ease-out" :style="{ transform: `translateY(-${scrollPositionMobile}px)` }">
         
         <div class="h-screen w-full flex flex-col bg-white">
-          <div class="h-2/3 w-full flex items-center justify-center">
-            <div class="w-24 h-80 overflow-hidden">
-              <NuxtImg src="/img/about/APROPOS.jpg" class="w-full h-full object-cover grayscale" alt="Dylan portrait" draggable="false" />
-            </div>
-          </div>
-          <div class="h-1/3 flex flex-col justify-center px-6">
-            <h1 class="text-4xl font-bold text-black leading-none mb-2">
+          <div class="h-1/2 flex flex-col justify-center px-8">
+            <h1 class="text-4xl font-bold text-black leading-none mb-4">
               DYLAN
             </h1>
-            <h2 class="text-2xl font-light italic text-black mb-2">
+            <h2 class="text-2xl font-light italic text-black mb-4">
               MOREL
             </h2>
-            <h3 class="text-xl font-bold text-black mb-1">
-              COMMERCIAL
+            <h3 class="text-xl font-bold text-black mb-2">
+              ARCHITECTE
             </h3>
             <h4 class="text-xl font-light italic text-black">
-              PHOTOGRAPHER
+              PHOTOGRAPHE
             </h4>
           </div>
-        </div>
-
-        <div class="h-screen w-full flex flex-col">
-          <div class="h-1/3 flex items-center justify-center px-6">
-            <div class="text-center">
-              <h2 class="text-3xl font-bold text-black leading-tight">
-                I LOVE COLOUR,<br>
-                MIXING IT, STUDYING IT,<br>
-                UNDERSTANDING IT.
-              </h2>
-            </div>
-          </div>
-          <div class="h-2/3 w-full flex items-center justify-center">
-            <div class="w-28 h-72 overflow-hidden">
+          <div class="h-1/2 flex items-center justify-center">
+            <div class="w-48 h-80 overflow-hidden">
               <NuxtImg src="/img/about/APROPOS.jpg" class="w-full h-full object-cover" alt="Dylan portrait" draggable="false" />
             </div>
           </div>
         </div>
 
+        <!-- Section 2: Vision -->
         <div class="h-screen w-full flex flex-col bg-white">
-          <div class="h-1/3 flex items-center justify-center px-6">
+          <div class="h-1/2 flex items-center justify-center px-8">
             <div class="text-center">
               <h2 class="text-3xl font-bold text-black leading-tight">
-                ARTS,<br>
-                PHOTOGRAPHY,<br>
-                BEAUTY
+                ENTRE BÉTON ET LUMIÈRE,<br>
+                JE CAPTURE L'ÂME DES VILLES<br>
+                QUE JE TRAVERSE.
               </h2>
             </div>
           </div>
-          <div class="h-2/3 w-full flex items-center justify-center">
-            <div class="w-26 h-64 overflow-hidden">
+          <div class="h-1/2" />
+        </div>
+
+        <!-- Section 3: Construction -->
+        <div class="h-screen w-full flex flex-col bg-white">
+          <div class="h-1/2 flex items-center justify-center px-8">
+            <div class="text-center">
+              <h2 class="text-3xl font-bold text-black leading-tight">
+                JE CONSTRUIS DES IMAGES,<br>
+                JE VOYAGE DANS LES FORMES.
+              </h2>
+            </div>
+          </div>
+          <div class="h-1/2 flex items-center justify-center">
+            <div class="w-48 h-72 overflow-hidden">
               <NuxtImg src="/img/about/APROPOS.jpg" class="w-full h-full object-cover grayscale" alt="Photo" draggable="false" />
             </div>
           </div>
         </div>
 
-        <div class="h-screen w-full flex flex-col">
+        <!-- Section 4: Emotion -->
+        <div class="h-screen w-full flex flex-col bg-white">
           <div class="h-1/2 flex items-center justify-center">
-            <div class="w-32 h-56 overflow-hidden">
+            <div class="w-48 h-64 overflow-hidden">
               <NuxtImg src="/img/about/APROPOS.jpg" class="w-full h-full object-cover" alt="Photo" draggable="false" />
             </div>
           </div>
-          <div class="h-1/2 flex items-center justify-center px-6">
+          <div class="h-1/2 flex items-center justify-center px-8">
             <div class="text-center">
-              <h3 class="text-2xl font-bold mb-4 text-black">Salut, moi c'est Dylan !</h3>
-              <p class="text-base leading-relaxed text-gray-800">
-                Je m'appelle Dylan et j'ai 27 ans. Je suis architecte passionné de photographie, et je travaille en Suisse. J'y puise mon inspiration dans la rigueur de l'architecture contemporaine ainsi que dans la beauté des paysages et des espaces urbains que je capture en photo.
-              </p>
+              <h2 class="text-3xl font-bold text-black leading-tight">
+                CHAQUE VILLE UNE HISTOIRE,<br>
+                CHAQUE BÂTIMENT UNE ÉMOTION,<br>
+                CHAQUE DÉTAIL UNE RÉVÉLATION.
+              </h2>
             </div>
           </div>
         </div>
 
-        <div class="h-screen bg-red-400 w-full flex flex-col">
-          <div class="h-1/3 flex items-center justify-center px-6">
+        <!-- Section 5: Final -->
+        <div class="h-screen w-full flex flex-col bg-white">
+          <div class="h-1/2 flex items-center justify-center px-8">
             <div class="text-center">
-              <h2 class="text-3xl font-bold leading-tight text-black">
-                CRÉATIVITÉ<br>
-                PASSION<br>
-                ARCHITECTURE
+              <h2 class="text-3xl font-bold text-black leading-tight">
+                VOYAGER POUR COMPRENDRE,<br>
+                PHOTOGRAPHIER POUR PARTAGER,<br>
+                RACONTER POUR ÉMOUVOIR.
               </h2>
             </div>
           </div>
-          <div class="h-2/3 w-full flex items-center justify-center">
-            <div class="w-30 h-72 overflow-hidden">
+          <div class="h-1/2 flex items-center justify-center">
+            <div class="w-44 h-80 overflow-hidden">
               <NuxtImg src="/img/about/APROPOS.jpg" class="w-full h-full object-cover grayscale opacity-80" alt="Background" draggable="false" />
             </div>
           </div>

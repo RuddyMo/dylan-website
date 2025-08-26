@@ -1,7 +1,6 @@
 <template>
   <div>
     <NuxtLayout name="navbar"></NuxtLayout>
-    <InstagramFooter />
   </div>
 </template>
 

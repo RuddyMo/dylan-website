@@ -3,7 +3,6 @@
     <NuxtLayout name="navbar">
       <AboutScroll />
     </NuxtLayout>
-    <InstagramFooter />
   </div>
 </template>
 

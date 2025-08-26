@@ -24,7 +24,7 @@
               <div class=" w-1/2 h-full flex items-center justify-end overflow-hidden">
                 <div class="w-2/3 h-screen overflow-hidden">
                   <NuxtImg 
-                    src="/img/about/APROPOS.jpg" 
+                    src="/img/about/about.webp" 
                     class="w-full h-full object-cover" 
                     alt="Dylan portrait" 
                     draggable="false"
@@ -62,7 +62,7 @@
             <div class="h-1/2 w-full flex items-start justify-center">
               <div class="w-full h-72 overflow-hidden pl-20">
                 <NuxtImg 
-                  src="/img/about/photo.jpg" 
+                  src="/img/about/photo.webp" 
                   class="w-auto h-full object-cover grayscale" 
                   alt="Photo" 
                   draggable="false"
@@ -75,7 +75,7 @@
             <div class="h-1/2 flex items-center justify-center">
               <div class="w-full h-80 overflow-hidden pl-20">
                 <NuxtImg 
-                  src="/img/about/archi.jpg" 
+                  src="/img/about/archi.webp" 
                   class="w-auto h-full object-cover grayscale" 
                   alt="Photo" 
                   draggable="false"
@@ -141,7 +141,7 @@
           </div>
           <div class="h-1/2 flex items-center justify-center">
             <div class="w-48 h-80 overflow-hidden">
-              <NuxtImg src="/img/about/APROPOS.jpg" class="w-full h-full object-cover" alt="Dylan portrait" draggable="false" />
+              <NuxtImg src="/img/about/about.webp" class="w-full h-full object-cover" alt="Dylan portrait" draggable="false" />
             </div>
           </div>
         </div>
@@ -169,7 +169,7 @@
           </div>
           <div class="h-1/2 flex items-center justify-center">
             <div class="w-full h-72 overflow-hidden">
-              <NuxtImg src="/img/about/photo.jpg" class="w-auto h-full object-cover grayscale" alt="Photo" draggable="false" />
+              <NuxtImg src="/img/about/photo.webp" class="w-auto h-full object-cover grayscale" alt="Photo" draggable="false" />
             </div>
           </div>
         </div>
@@ -177,7 +177,7 @@
         <div class="h-screen w-full flex flex-col bg-white">
           <div class="h-1/2 flex items-center justify-center">
             <div class="w-48 h-64 overflow-hidden">
-              <NuxtImg src="/img/about/archi.jpg" class="w-auto h-full object-cover" alt="Photo" draggable="false" />
+              <NuxtImg src="/img/about/archi.webp" class="w-auto h-full object-cover" alt="Photo" draggable="false" />
             </div>
           </div>
           <div class="h-1/2 flex items-center justify-center px-8">

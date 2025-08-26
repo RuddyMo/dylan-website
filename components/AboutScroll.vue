@@ -23,7 +23,13 @@
               
               <div class=" w-1/2 h-full flex items-center justify-end overflow-hidden">
                 <div class="w-2/3 h-screen overflow-hidden">
-                  <NuxtImg src="/img/about/APROPOS.jpg" class="w-full h-full object-cover" alt="Dylan portrait" draggable="false" />
+                  <NuxtImg 
+                    src="/img/about/APROPOS.jpg" 
+                    class="w-full h-full object-cover" 
+                    alt="Dylan portrait" 
+                    draggable="false"
+                    :style="{ transform: `translateX(${scrollPosition * 0.1}px)` }"
+                  />
                 </div>
               </div>
             </div>
@@ -55,15 +61,25 @@
             
             <div class="h-1/2 w-full flex items-start justify-center">
               <div class="w-full h-72 overflow-hidden pl-20">
-                <NuxtImg src="/img/about/APROPOS.jpg" class="w-48 h-full object-cover grayscal" alt="Photo" draggable="false" />
+                <NuxtImg 
+                  src="/img/about/photo.jpg" 
+                  class="w-auto h-full object-cover grayscale" 
+                  alt="Photo" 
+                  draggable="false"
+                />
               </div>
             </div>
           </div>
 
           <div class="flex flex-col min-w-[40%] relative">
             <div class="h-1/2 flex items-center justify-center">
-              <div class="w-full h-64 overflow-hidden pl-20">
-                <NuxtImg src="/img/about/APROPOS.jpg" class="w-48 h-full object-cover" alt="Photo" draggable="false" />
+              <div class="w-full h-80 overflow-hidden pl-20">
+                <NuxtImg 
+                  src="/img/about/archi.jpg" 
+                  class="w-auto h-full object-cover grayscale" 
+                  alt="Photo" 
+                  draggable="false"
+                />
               </div>
             </div>
             
@@ -91,15 +107,21 @@
             
             <div class="h-1/2 w-full flex items-center justify-center">
               <div class="w-full h-80 overflow-hidden pl-20">
-                <NuxtImg src="/img/about/APROPOS.jpg" class="w-44 h-full object-cover grayscale opacity-80" alt="Background" draggable="false" />
+                <NuxtImg 
+                  src="/img/about/voyage.webp" 
+                  class="w-auto h-full object-cover grayscale opacity-80" 
+                  alt="Background" 
+                  draggable="false"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
+     <ScrollBar :progress="scrollProgress" />
     </div>
 
-    <div class="md:hidden h-screen overflow-hidden" @touchstart="handleTouchStartMobile" @touchmove="handleTouchMoveMobile" @touchend="handleTouchEndMobile" @wheel="handleWheelMobile" @contextmenu.prevent>
+    <div class="md:hidden h-full overflow-hidden" @touchstart="handleTouchStartMobile" @touchmove="handleTouchMoveMobile" @touchend="handleTouchEndMobile" @wheel="handleWheelMobile" @contextmenu.prevent>
       <div ref="containerMobile" class="transition-transform duration-300 ease-out" :style="{ transform: `translateY(-${scrollPositionMobile}px)` }">
         
         <div class="h-screen w-full flex flex-col bg-white">
@@ -124,8 +146,7 @@
           </div>
         </div>
 
-        <!-- Section 2: Vision -->
-        <div class="h-screen w-full flex flex-col bg-white">
+        <div class="h-full w-full flex flex-col bg-white">
           <div class="h-1/2 flex items-center justify-center px-8">
             <div class="text-center">
               <h2 class="text-3xl font-bold text-black leading-tight">
@@ -135,10 +156,8 @@
               </h2>
             </div>
           </div>
-          <div class="h-1/2" />
         </div>
 
-        <!-- Section 3: Construction -->
         <div class="h-screen w-full flex flex-col bg-white">
           <div class="h-1/2 flex items-center justify-center px-8">
             <div class="text-center">
@@ -149,17 +168,16 @@
             </div>
           </div>
           <div class="h-1/2 flex items-center justify-center">
-            <div class="w-48 h-72 overflow-hidden">
-              <NuxtImg src="/img/about/APROPOS.jpg" class="w-full h-full object-cover grayscale" alt="Photo" draggable="false" />
+            <div class="w-full h-72 overflow-hidden">
+              <NuxtImg src="/img/about/photo.jpg" class="w-auto h-full object-cover grayscale" alt="Photo" draggable="false" />
             </div>
           </div>
         </div>
 
-        <!-- Section 4: Emotion -->
         <div class="h-screen w-full flex flex-col bg-white">
           <div class="h-1/2 flex items-center justify-center">
             <div class="w-48 h-64 overflow-hidden">
-              <NuxtImg src="/img/about/APROPOS.jpg" class="w-full h-full object-cover" alt="Photo" draggable="false" />
+              <NuxtImg src="/img/about/archi.jpg" class="w-auto h-full object-cover" alt="Photo" draggable="false" />
             </div>
           </div>
           <div class="h-1/2 flex items-center justify-center px-8">
@@ -173,8 +191,7 @@
           </div>
         </div>
 
-        <!-- Section 5: Final -->
-        <div class="h-screen w-full flex flex-col bg-white">
+        <div class="h-full w-full flex flex-col bg-white">
           <div class="h-1/2 flex items-center justify-center px-8">
             <div class="text-center">
               <h2 class="text-3xl font-bold text-black leading-tight">
@@ -185,8 +202,8 @@
             </div>
           </div>
           <div class="h-1/2 flex items-center justify-center">
-            <div class="w-44 h-80 overflow-hidden">
-              <NuxtImg src="/img/about/APROPOS.jpg" class="w-full h-full object-cover grayscale opacity-80" alt="Background" draggable="false" />
+            <div class="w-full h-80 overflow-hidden">
+              <NuxtImg src="/img/about/voyage.webp" class="w-auto h-full object-cover grayscale opacity-80" alt="Background" draggable="false" />
             </div>
           </div>
         </div>
@@ -199,16 +216,18 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 
+
 const touchStartX = ref(0);
 const touchStartY = ref(0);
 const initialScrollPosition = ref(0);
 const containerDesktop = ref(null);
-const scrollPosition = ref(0);
 
 const touchStartYMobile = ref(0);
 const initialScrollPositionMobile = ref(0);
 const containerMobile = ref(null);
 const scrollPositionMobile = ref(0);
+
+const { scrollPosition, scrollProgress, updateScrollPosition } = useScrollProgress(containerDesktop, 'horizontal');
 
 onMounted(() => {
   window.addEventListener('wheel', handleScroll, { passive: false });
@@ -251,12 +270,6 @@ const handleTouchMove = (e) => {
 const handleTouchEnd = () => {
   touchStartX.value = 0;
   touchStartY.value = 0;
-};
-
-const updateScrollPosition = (delta) => {
-  if (!containerDesktop.value) return;
-  const maxScroll = containerDesktop.value.scrollWidth - window.innerWidth;
-  scrollPosition.value = Math.max(0, Math.min(maxScroll, scrollPosition.value + delta));
 };
 
 const handleWheelMobile = (e) => {
@@ -311,4 +324,5 @@ const updateScrollPositionMobile = (delta) => {
 * {
   -ms-overflow-style: none;
 }
+
 </style>

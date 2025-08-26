@@ -1,12 +1,13 @@
 <template>
   <div class="bg-white">
     <div class="relative h-[calc(100vh-32px)] overflow-hidden" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @contextmenu.prevent>
-      <div ref="container" class="absolute flex h-full w-full transition-transform duration-300 ease-out gap-x-4" :style="{ transform: `translateX(-${scrollPosition}px)` }">
+      <div ref="containerDesktop" class="absolute flex h-full w-full transition-transform duration-300 ease-out gap-x-4" :style="{ transform: `translateX(-${scrollPosition}px)` }">
         <div v-for="(image, index) in images" :key="index" class="flex justify-center items-center min-w-full relative">
           <NuxtImg :src="image" class="h-full w-auto object-contain pointer-events-none select-none" alt="Slide image" draggable="false" style="-webkit-user-drag: none" />
-          <div class="absolute inset-0 z-10"></div>
+          <div class="absolute inset-0 z-10"/>
         </div>
       </div>
+      <ScrollBar :progress="scrollProgress" />
     </div>
   </div>
 </template>
@@ -19,6 +20,9 @@ const screenHeight = ref(1080);
 const touchStartX = ref(0);
 const touchStartY = ref(0);
 const initialScrollPosition = ref(0);
+const containerDesktop = ref(null);
+
+const { scrollPosition, scrollProgress, updateScrollPosition } = useScrollProgress(containerDesktop, 'horizontal');
 
 const images = ref([
   'img/accueil/1.webp',
@@ -36,9 +40,6 @@ const images = ref([
   'img/accueil/13.webp',
   'img/accueil/14.webp'
 ]);
-
-const container = ref(null);
-const scrollPosition = ref(0);
 
 onMounted(() => {
   screenWidth.value = window.innerWidth;
@@ -86,11 +87,6 @@ const handleTouchMove = (e) => {
 const handleTouchEnd = () => {
   touchStartX.value = 0;
   touchStartY.value = 0;
-};
-
-const updateScrollPosition = (delta) => {
-  const maxScroll = container.value.scrollWidth - window.innerWidth;
-  scrollPosition.value = Math.max(0, Math.min(maxScroll, scrollPosition.value + delta));
 };
 </script>
 

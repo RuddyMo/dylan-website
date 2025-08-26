@@ -2,15 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-
-html {
-    overflow: hidden;
-}
-
 body {
     cursor: none;
-    overflow: hidden;
+    -ms-overflow-style: none;
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+html {
+  scrollbar-width: none;
+}
+
 
 a {
     cursor: none;

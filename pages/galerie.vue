@@ -345,6 +345,15 @@ onUnmounted(() => {
   justify-content: center;
 }
 
+@media (max-width: 768px) {
+  .grid-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 0 5px;
+  }
+}
+
 .grid-item {
   position: relative;
   grid-column: span 3;
@@ -376,6 +385,22 @@ onUnmounted(() => {
 
 .grid-item.large img {
   height: calc(66vh + 2rem);
+}
+
+@media (max-width: 768px) {
+  .grid-item {
+    grid-column: unset;
+  }
+  
+  .grid-item img {
+    width: 100%;
+    height: 200px;
+    min-height: unset;
+  }
+  
+  .grid-item.large img {
+    height: 200px;
+  }
 }
 
 .grid-item img:hover {

@@ -4,6 +4,16 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/main.css'],
 
+  runtimeConfig: {
+    public: {
+      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
+      supabaseAnonKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY
+    }
+  },
+  image: {
+    domains: ['pxgouygdlgvcbprppwtk.supabase.co']
+  },
+
   app: {
     head: {
       link: [

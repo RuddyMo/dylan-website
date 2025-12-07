@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxt/eslint": "^1.5.2",
     "@nuxt/image": "^1.10.0",
+    "@supabase/supabase-js": "^2.86.2",
     "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.1",

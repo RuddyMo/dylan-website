@@ -104,11 +104,6 @@ const fetchNextPage = async (): Promise<void> => {
     sortBy: { column: 'name', order: 'asc' }
   });
 
-  console.log(`LIST "${currentFolder.value}" [offset=${offset.value}] =>`, {
-    data,
-    error
-  });
-
   if (error) {
     console.error('Erreur list Supabase', error);
     hasMore.value = false;

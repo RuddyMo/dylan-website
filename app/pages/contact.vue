@@ -2,11 +2,7 @@
   <NuxtLayout name="navbar">
     <div class="hidden lg:flex w-full h-[calc(100vh-76px)] overflow-hidden">
       <div class="w-1/2 relative">
-        <NuxtImg 
-          src="/img/contact/contact.webp" 
-          class="w-full h-full object-cover grayscale" 
-          alt="Contact" 
-        />
+        <NuxtImg src="/img/contact/contact.webp" class="w-full h-full object-cover grayscale" alt="Contact" />
         <div class="absolute inset-0 bg-black bg-opacity-20" />
       </div>
 
@@ -14,42 +10,36 @@
         <div class="w-full max-w-lg">
           <div class="text-center mb-6">
             <h1 class="text-3xl font-light text-gray-900 mb-3">Contactez-moi</h1>
-            <p class="text-gray-600 text-sm">
-              Discutons de votre projet ensemble.
-            </p>
+            <p class="text-gray-600 text-sm">Discutons de votre projet ensemble.</p>
           </div>
 
           <form class="space-y-4" @submit.prevent="submitForm">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                Nom complet
-              </label>
+              <label for="name" class="block text-sm font-medium text-gray-700 mb-2"> Nom complet </label>
               <input
                 id="name"
                 v-model="form.name"
                 type="text"
                 required
                 class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 placeholder-gray-400"
-                placeholder="Votre nom complet">
+                placeholder="Votre nom complet"
+              />
             </div>
 
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                Adresse email
-              </label>
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-2"> Adresse email </label>
               <input
                 id="email"
                 v-model="form.email"
                 type="email"
                 required
                 class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 placeholder-gray-400"
-                placeholder="votre@email.com">
+                placeholder="votre@email.com"
+              />
             </div>
 
             <div>
-              <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
-                Message
-              </label>
+              <label for="message" class="block text-sm font-medium text-gray-700 mb-2"> Message </label>
               <textarea
                 id="message"
                 v-model="form.message"
@@ -104,11 +94,7 @@
 
     <div class="lg:hidden h-[calc(100vh-76px)] overflow-y-auto bg-white">
       <div class="relative h-48 overflow-hidden">
-        <NuxtImg 
-          src="/img/contact/contact.webp" 
-          class="w-full h-full object-cover grayscale" 
-          alt="Contact" 
-        />
+        <NuxtImg src="/img/contact/contact.webp" class="w-full h-full object-cover grayscale" alt="Contact" />
         <div class="absolute inset-0 bg-black bg-opacity-40" />
         <div class="absolute inset-0 flex items-center justify-center">
           <div class="text-center text-white">
@@ -121,35 +107,31 @@
       <div class="px-6 py-8">
         <form class="space-y-5" @submit.prevent="submitForm">
           <div>
-            <label for="name-mobile" class="block text-sm font-medium text-gray-700 mb-2">
-              Nom complet
-            </label>
+            <label for="name-mobile" class="block text-sm font-medium text-gray-700 mb-2"> Nom complet </label>
             <input
               id="name-mobile"
               v-model="form.name"
               type="text"
               required
               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 placeholder-gray-400"
-              placeholder="Votre nom complet">
+              placeholder="Votre nom complet"
+            />
           </div>
 
           <div>
-            <label for="email-mobile" class="block text-sm font-medium text-gray-700 mb-2">
-              Adresse email
-            </label>
+            <label for="email-mobile" class="block text-sm font-medium text-gray-700 mb-2"> Adresse email </label>
             <input
               id="email-mobile"
               v-model="form.email"
               type="email"
               required
               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 placeholder-gray-400"
-              placeholder="votre@email.com">
+              placeholder="votre@email.com"
+            />
           </div>
 
           <div>
-            <label for="message-mobile" class="block text-sm font-medium text-gray-700 mb-2">
-              Message
-            </label>
+            <label for="message-mobile" class="block text-sm font-medium text-gray-700 mb-2"> Message </label>
             <textarea
               id="message-mobile"
               v-model="form.message"
@@ -208,49 +190,40 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive } from 'vue';
 
-// Form data
 const form = reactive({
   name: '',
   email: '',
   subject: '',
   message: ''
-})
+});
 
-// Form state
-const isSubmitting = ref(false)
-const showSuccess = ref(false)
+const isSubmitting = ref(false);
+const showSuccess = ref(false);
 
-// Submit form function
 const submitForm = async () => {
-  isSubmitting.value = true
-  
+  isSubmitting.value = true;
+
   try {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Show success message
-    showSuccess.value = true
-    
-    // Reset form
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    showSuccess.value = true;
+
     Object.assign(form, {
       name: '',
       email: '',
       subject: '',
       message: ''
-    })
-    
-    // Hide success message after 5 seconds
-    setTimeout(() => {
-      showSuccess.value = false
-    }, 5000)
-    
-  } catch (error) {
-    console.error('Error submitting form:', error)
-  } finally {
-    isSubmitting.value = false
-  }
-}
-</script>
+    });
 
+    setTimeout(() => {
+      showSuccess.value = false;
+    }, 5000);
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  } finally {
+    isSubmitting.value = false;
+  }
+};
+</script>

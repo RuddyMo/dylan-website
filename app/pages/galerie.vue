@@ -61,7 +61,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch, type ComputedRef, type Ref } from 'vue';
 import type { ButtonItem, ImageItem, FolderMap, GalleryType } from '~/types/IGalerieImage';
 

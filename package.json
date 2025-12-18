@@ -13,22 +13,29 @@
     "@nuxt/eslint": "^1.5.2",
     "@nuxt/image": "^1.10.0",
     "@supabase/supabase-js": "^2.86.2",
+    "@vueuse/core": "^14.1.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.1",
     "lucide-vue-next": "^0.561.0",
     "nuxt": "^4.0.3",
     "prettier": "^3.6.2",
+    "radix-vue": "^1.9.17",
     "reka-ui": "^2.6.1",
     "shadcn-nuxt": "^2.4.3",
     "swiper": "^11.2.10",
+    "tailwind-merge": "^3.4.0",
     "typescript": "^5.8.3",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@iconify/vue": "^5.0.0",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17"
-  }
+  },
+  "packageManager": "pnpm@10.18.3+sha512.bbd16e6d7286fd7e01f6b3c0b3c932cda2965c06a908328f74663f10a9aea51f1129eea615134bf992831b009eabe167ecb7008b597f40ff9bc75946aadfb08d"
 }

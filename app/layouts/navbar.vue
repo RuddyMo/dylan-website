@@ -49,7 +49,7 @@ onMounted(async () => {
     const { data } = await $supabase.auth.getSession();
     isAuthenticated.value = !!data?.session;
 
-    $supabase.auth.onAuthStateChange((session) => {
+    $supabase.auth.onAuthStateChange((_event, session) => {
       isAuthenticated.value = !!session;
     });
   }

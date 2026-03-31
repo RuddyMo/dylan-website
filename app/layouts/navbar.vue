@@ -28,7 +28,7 @@
           contact
         </nuxt-link>
         <nuxt-link v-if="isAuthenticated" to="/dashboard" title="Dashboard"
-          ><Button size="icon" class="h-[20px] w-[20px] shadow-none"><ShieldUser :size="20" /></Button
+          ><button size="icon" class="h-[20px] w-[20px] shadow-none"><ShieldUser :size="20" /></button
         ></nuxt-link>
       </nav>
     </div>

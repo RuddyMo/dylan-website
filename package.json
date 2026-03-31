@@ -22,9 +22,6 @@
     "lucide-vue-next": "^0.561.0",
     "nuxt": "^4.0.3",
     "prettier": "^3.6.2",
-    "radix-vue": "^1.9.17",
-    "reka-ui": "^2.6.1",
-    "shadcn-nuxt": "^2.4.3",
     "swiper": "^11.2.10",
     "tailwind-merge": "^3.4.0",
     "typescript": "^5.8.3",
@@ -36,5 +33,6 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17"
-  }
+  },
+  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be"
 }

@@ -30,16 +30,14 @@
 
         <div v-else class="grid-gallery">
           <div v-for="image in filteredImages" :key="image.url" class="grid-item relative" @click="openModal($event, image.url)">
-            <NuxtImg
+            <img
               :src="image.url"
               alt="gal"
-              quality="70"
               loading="lazy"
-              placeholder
               class="block w-full h-[200px] min-h-0 object-cover select-none transition-opacity duration-300 hover:opacity-90 md:h-[33vh] md:min-h-[10rem] md:w-auto pointer-events-none"
               draggable="false"
               style="-webkit-user-drag: none"
-            />
+            >
           </div>
 
           <p v-if="!filteredImages.length && !isLoadingMore" class="col-span-12 mt-8 text-center text-sm text-gray-500">Aucune image à afficher pour cette catégorie.</p>
@@ -53,7 +51,7 @@
 
       <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90" @click="closeModal">
         <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
-          <NuxtImg :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain select-none" quality="70" placeholder draggable="false" style="-webkit-user-drag: none" />
+          <img :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain select-none" draggable="false" style="-webkit-user-drag: none">
           <button class="absolute -top-10 right-0 p-2 text-white hover:text-gray-300" @click="closeModal">Fermer</button>
         </div>
       </div>

@@ -2,7 +2,7 @@
   <NuxtLayout name="navbar">
     <div class="hidden lg:flex w-full h-[calc(100vh-76px)] overflow-hidden">
       <div class="w-1/2 relative">
-        <NuxtImg src="/img/contact/contact.webp" class="w-full h-full object-cover grayscale" alt="Contact" />
+        <img src="/img/contact/contact.webp" class="w-full h-full object-cover grayscale" alt="Contact">
         <div class="absolute inset-0 bg-black bg-opacity-20" />
       </div>
 
@@ -23,7 +23,7 @@
                 required
                 class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 placeholder-gray-400"
                 placeholder="Votre nom complet"
-              />
+              >
             </div>
 
             <div>
@@ -35,7 +35,7 @@
                 required
                 class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 placeholder-gray-400"
                 placeholder="votre@email.com"
-              />
+              >
             </div>
 
             <div>
@@ -94,7 +94,7 @@
 
     <div class="lg:hidden h-[calc(100vh-76px)] overflow-y-auto bg-white">
       <div class="relative h-48 overflow-hidden">
-        <NuxtImg src="/img/contact/contact.webp" class="w-full h-full object-cover grayscale" alt="Contact" />
+        <img src="/img/contact/contact.webp" class="w-full h-full object-cover grayscale" alt="Contact">
         <div class="absolute inset-0 bg-black bg-opacity-40" />
         <div class="absolute inset-0 flex items-center justify-center">
           <div class="text-center text-white">
@@ -115,7 +115,7 @@
               required
               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 placeholder-gray-400"
               placeholder="Votre nom complet"
-            />
+            >
           </div>
 
           <div>
@@ -127,7 +127,7 @@
               required
               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 placeholder-gray-400"
               placeholder="votre@email.com"
-            />
+            >
           </div>
 
           <div>

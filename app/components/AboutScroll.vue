@@ -3,7 +3,7 @@
     <div class="hidden md:block relative h-[calc(100vh-32px)] overflow-hidden" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @contextmenu.prevent>
       <div ref="containerDesktop" class="absolute flex h-full w-full transition-transform duration-300 ease-out" :style="{ transform: `translateX(-${scrollPosition}px)` }">
         <div class="flex">
-          <div class="flex justify-between min-w-[100vw] items-center bg-white">
+          <div class="flex justify-between min-w-screen items-center bg-white">
             <div class="flex w-full h-full">
               <div class="w-1/2 flex flex-col justify-center px-12">
                 <h1 class="text-6xl md:text-8xl font-bold text-black leading-none mb-4">DYLAN</h1>

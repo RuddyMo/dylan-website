@@ -34,7 +34,7 @@
               :src="image.url"
               alt="gal"
               loading="lazy"
-              class="block w-full h-[200px] min-h-0 object-cover select-none transition-opacity duration-300 hover:opacity-90 md:h-[33vh] md:min-h-[10rem] md:w-auto pointer-events-none"
+              class="block w-full h-[200px] min-h-0 object-cover select-none transition-opacity duration-300 hover:opacity-90 md:h-[33vh] md:min-h-40 md:w-auto pointer-events-none"
               draggable="false"
               style="-webkit-user-drag: none"
             >

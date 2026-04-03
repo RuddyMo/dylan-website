@@ -1,6 +1,6 @@
 export default {
   "theme": "neutral",
-  "tailwindCSSLocation": "app/assets/css/main.css",
+  "tailwindCSSLocation": "app/assets/css/tailwind.css",
   "componentsLocation": "app/components/Ui",
   "composablesLocation": "app/composables",
   "pluginsLocation": "app/plugins",

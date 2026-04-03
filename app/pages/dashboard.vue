@@ -1,48 +1,78 @@
 <template>
-  <NuxtLayout>
-    <div class="min-h-screen flex bg-gray-50"></div>
+  <NuxtLayout name="sidebar">
+    <UiDatatable :data="data" :options>
+      <template #name="{ cellData }: { cellData: Item }">
+        <div class="flex items-center gap-3">
+          <UiAvatar :src="cellData.image" :alt="cellData.name" />
+          <div>
+            <div class="font-medium">{{ cellData.name }}</div>
+            <span class="text-xs text-muted-foreground">@{{ cellData.username }}</span>
+          </div>
+        </div>
+      </template>
+    </UiDatatable>
   </NuxtLayout>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { faker } from '@faker-js/faker';
 
 definePageMeta({
   middleware: 'auth-client'
 });
 
-const menu = ['Accueil', 'Analytics', 'Utilisateurs', 'Paramètres'];
+const { data } = await useAsyncData(
+  async () => {
+    return Array.from({ length: 5 }, (item, index) => {
+      return {
+        id: index + 1,
+        name: faker.person.fullName(),
+        username: faker.internet.username().toLowerCase(),
+        image: faker.image.avatar().toLowerCase(),
+        email: faker.internet.email()?.toLowerCase(),
+        location: faker.location.city(),
+        status: faker.helpers.arrayElement(['Active', 'Inactive']),
+        balance: faker.number.float({ fractionDigits: 2, min: 0, max: 1200 })
+      };
+    });
+  },
+  { default: () => [] }
+);
 
-const cards = [
-  { title: 'Utilisateurs', value: '1,234', subtitle: 'Ce mois' },
-  { title: 'Ventes', value: '$12,345', subtitle: 'Ce mois' },
-  { title: 'Taux de conversion', value: '3.4%', subtitle: 'Dernière semaine' }
-];
+type Item = (typeof data.value)[0];
 
-const activity = ref<string[]>(['Nouvel utilisateur: alice@example.com', 'Commande #345 traitée', 'Compte mis à jour: bob@example.com']);
-
-const progress = ref<number>(0);
-let timer: ReturnType<typeof setInterval> | null = null;
-
-function startProgress() {
-  if (timer) return;
-  progress.value = 0;
-  timer = setInterval(() => {
-    progress.value += Math.floor(Math.random() * 15) + 5;
-    if (progress.value >= 100) {
-      progress.value = 100;
-      clearInterval(timer!);
-      timer = null;
-      setTimeout(() => (progress.value = 0), 800);
-    }
-  }, 400);
-}
-
-function reset() {
-  if (timer) {
-    clearInterval(timer);
-    timer = null;
-  }
-  progress.value = 0;
-}
+const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(value);
+};
+const options = ref({});
+onMounted(() => {
+  options.value = {
+    dom: `<'${tw`overflow-auto`}'t>`,
+    ordering: false,
+    columns: [
+      { title: 'ID', data: 'id', visible: false },
+      {
+        title: 'Name',
+        data: null,
+        render: {
+          _: 'name',
+          display: '#name'
+        },
+        searchable: false
+      },
+      { title: 'Email', data: 'email' },
+      { title: 'Location', data: 'location' },
+      { title: 'Status', data: 'status' },
+      {
+        title: 'Balance',
+        data: 'balance',
+        className: `text-right`,
+        render: (data: number) => formatCurrency(data)
+      }
+    ]
+  };
+});
 </script>

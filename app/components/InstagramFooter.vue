@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-0 left-0 right-0 bg-white py-[7px] w-full justify-center flex items-center">
+  <div class="fixed bottom-0 left-0 right-0 bg-white py-2.25 w-full justify-center flex items-center">
     <a href="https://www.instagram.com/mrldylan_/">
       <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 50 50">
         <path

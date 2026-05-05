@@ -1,35 +1,34 @@
 <template>
-  <NuxtLayout name="sidebar">
-    <UiDatatable :data="data" :options>
-      <template #name="{ cellData }: { cellData: Item }">
-        <div class="flex items-center gap-3">
-          <UiAvatar :src="cellData.image" :alt="cellData.name" />
-          <div>
-            <div class="font-medium">{{ cellData.name }}</div>
-            <span class="text-xs text-muted-foreground">@{{ cellData.username }}</span>
-          </div>
+  <UiDatatable :data="data ?? []" :options="options">
+    <template #name="{ cellData }: { cellData: Item }">
+      <div class="flex items-center gap-3">
+        <UiAvatar :src="cellData.image" :alt="cellData.name" />
+        <div>
+          <div class="font-medium">{{ cellData.name }}</div>
+          <span class="text-xs text-muted-foreground">@{{ cellData.username }}</span>
         </div>
-      </template>
-    </UiDatatable>
-  </NuxtLayout>
+      </div>
+    </template>
+  </UiDatatable>
 </template>
 
 <script lang="ts" setup>
 import { faker } from '@faker-js/faker';
 
 definePageMeta({
+  layout: 'sidebar',
   middleware: 'auth-client'
 });
 
 const { data } = await useAsyncData(
   async () => {
-    return Array.from({ length: 5 }, (item, index) => {
+    return Array.from({ length: 5 }, (_, index) => {
       return {
         id: index + 1,
         name: faker.person.fullName(),
         username: faker.internet.username().toLowerCase(),
         image: faker.image.avatar().toLowerCase(),
-        email: faker.internet.email()?.toLowerCase(),
+        email: faker.internet.email().toLowerCase(),
         location: faker.location.city(),
         status: faker.helpers.arrayElement(['Active', 'Inactive']),
         balance: faker.number.float({ fractionDigits: 2, min: 0, max: 1200 })
@@ -47,32 +46,30 @@ const formatCurrency = (value: number) => {
     currency: 'USD'
   }).format(value);
 };
-const options = ref({});
-onMounted(() => {
-  options.value = {
-    dom: `<'${tw`overflow-auto`}'t>`,
-    ordering: false,
-    columns: [
-      { title: 'ID', data: 'id', visible: false },
-      {
-        title: 'Name',
-        data: null,
-        render: {
-          _: 'name',
-          display: '#name'
-        },
-        searchable: false
+
+const options = {
+  dom: `<'${tw`overflow-auto`}'t>`,
+  ordering: false,
+  columns: [
+    { title: 'ID', data: 'id', visible: false },
+    {
+      title: 'Name',
+      data: null,
+      render: {
+        _: 'name',
+        display: '#name'
       },
-      { title: 'Email', data: 'email' },
-      { title: 'Location', data: 'location' },
-      { title: 'Status', data: 'status' },
-      {
-        title: 'Balance',
-        data: 'balance',
-        className: `text-right`,
-        render: (data: number) => formatCurrency(data)
-      }
-    ]
-  };
-});
+      searchable: false
+    },
+    { title: 'Email', data: 'email' },
+    { title: 'Location', data: 'location' },
+    { title: 'Status', data: 'status' },
+    {
+      title: 'Balance',
+      data: 'balance',
+      className: 'text-right',
+      render: (value: number) => formatCurrency(value)
+    }
+  ]
+};
 </script>

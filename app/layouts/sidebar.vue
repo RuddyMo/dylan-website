@@ -75,15 +75,15 @@ const user = {
 };
 
 const topNav = [
-  { title: 'Home', icon: 'lucide:home', link: '#' },
+  { title: 'Home', icon: 'lucide:home', link: '/dashboard' },
   {
     title: 'Photo',
     icon: 'lucide:folder',
     items: [
-      { title: 'Accueil', link: '#' },
-      { title: 'Gallerie', link: '#' },
-      { title: 'Contact', link: '#' },
-      { title: 'About', link: '#' }
+      { title: 'About', link: '/gallery/about' },
+      { title: 'Accueil', link: '/gallery/accueil' },
+      { title: 'Contact', link: '/gallery/contact' },
+      { title: 'Galerie', link: '/gallery' }
     ]
   }
 ];

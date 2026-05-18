@@ -1,69 +1,69 @@
 <template>
   <div class="bg-white" @contextmenu.prevent>
-    <NuxtLayout name="navbar">
-      <div class="max-w-[90%] mx-auto">
-        <div class="flex justify-center gap-4 mb-2">
-          <button
-            v-for="(button, index) in buttons"
-            :key="index"
-            class="text-sm relative cursor-none px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
-            :class="{ 'font-bold': typeSelected === button.type }"
-            @click="typeSelected = button.type"
-          >
-            {{ button.label }}
-          </button>
-        </div>
-
-        <div v-if="isInitialLoading" class="grid w-full grid-cols-12 gap-4">
-          <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300" />
-          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
-          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
-          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300" />
-          <div class="animate-pulse col-start-2 col-span-4 h-80 w-full bg-gray-300" />
-          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
-          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
-          <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
-          <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300" />
-          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300" />
-          <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300" />
-        </div>
-
-        <div v-else class="grid-gallery">
-          <div v-for="image in filteredImages" :key="image.url" class="grid-item relative" @click="openModal($event, image.url)">
-            <NuxtImg
-              :src="image.url"
-              alt="gal"
-              quality="70"
-              loading="lazy"
-              placeholder
-              class="block w-full h-[200px] min-h-0 object-cover select-none transition-opacity duration-300 hover:opacity-90 md:h-[33vh] md:min-h-[10rem] md:w-auto pointer-events-none"
-              draggable="false"
-              style="-webkit-user-drag: none"
-            />
-          </div>
-
-          <p v-if="!filteredImages.length && !isLoadingMore" class="col-span-12 mt-8 text-center text-sm text-gray-500">Aucune image à afficher pour cette catégorie.</p>
-
-          <div v-if="hasMore" ref="loadMoreTrigger" class="w-full py-6 mb-6 text-center text-sm text-gray-500">
-            <span v-if="isLoadingMore">Chargement...</span>
-            <span v-else>Scroll pour charger plus</span>
-          </div>
-        </div>
+    <div class="max-w-[90%] mx-auto">
+      <div class="flex justify-center gap-4 mb-2">
+        <button
+          v-for="(button, index) in buttons"
+          :key="index"
+          class="text-sm relative cursor-none px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
+          :class="{ 'font-bold': typeSelected === button.type }"
+          @click="typeSelected = button.type"
+        >
+          {{ button.label }}
+        </button>
       </div>
 
-      <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90" @click="closeModal">
-        <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
-          <NuxtImg :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain select-none" quality="70" placeholder draggable="false" style="-webkit-user-drag: none" />
-          <button class="absolute -top-10 right-0 p-2 text-white hover:text-gray-300" @click="closeModal">Fermer</button>
+      <div v-if="isInitialLoading" class="grid w-full grid-cols-12 gap-4">
+        <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300" />
+        <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
+        <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
+        <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300" />
+        <div class="animate-pulse col-start-2 col-span-4 h-80 w-full bg-gray-300" />
+        <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
+        <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
+        <div class="animate-pulse col-span-2 h-80 w-full bg-gray-300" />
+        <div class="animate-pulse col-start-2 col-span-2 h-80 w-full bg-gray-300" />
+        <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300" />
+        <div class="animate-pulse col-span-4 h-80 w-full bg-gray-300" />
+      </div>
+
+      <div v-else class="grid-gallery">
+        <div v-for="image in filteredImages" :key="image.url" class="grid-item relative" @click="openModal($event, image.url)">
+          <img
+            :src="image.url"
+            alt="gal"
+            loading="lazy"
+            class="block w-full h-[200px] min-h-0 object-cover select-none transition-opacity duration-300 hover:opacity-90 md:h-[33vh] md:min-h-40 md:w-auto pointer-events-none"
+            draggable="false"
+            style="-webkit-user-drag: none"
+          />
+        </div>
+
+        <p v-if="!filteredImages.length && !isLoadingMore" class="col-span-12 mt-8 text-center text-sm text-gray-500">Aucune image à afficher pour cette catégorie.</p>
+
+        <div v-if="hasMore" ref="loadMoreTrigger" class="w-full py-6 mb-6 text-center text-sm text-gray-500">
+          <span v-if="isLoadingMore">Chargement...</span>
+          <span v-else>Scroll pour charger plus</span>
         </div>
       </div>
-    </NuxtLayout>
+    </div>
+
+    <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90" @click="closeModal">
+      <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
+        <img :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain select-none" draggable="false" style="-webkit-user-drag: none" />
+        <button class="absolute -top-10 right-0 p-2 text-white hover:text-gray-300" @click="closeModal">Fermer</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch, type ComputedRef, type Ref } from 'vue';
 import type { ButtonItem, ImageItem, FolderMap, GalleryType } from '~/types/IGalerieImage';
+
+definePageMeta({
+  layout: 'navbar'
+});
 
 const { $supabase } = useNuxtApp();
 

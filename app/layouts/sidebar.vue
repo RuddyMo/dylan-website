@@ -1,75 +1,90 @@
-<script setup lang="ts">
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarRail,
-  SidebarTrigger
-} from '@/components/ui/sidebar';
-</script>
-
 <template>
-  <SidebarProvider>
-    <Sidebar>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg">
-              <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <GalleryVerticalEnd class="size-4" />
+  <div class="flex min-h-screen">
+    <aside class="h-screen w-75 border-r bg-background">
+      <UiScrollArea class="size-full">
+        <div class="flex h-screen flex-col pt-7">
+          <NuxtLink to="#" class="flex w-full items-center gap-3 px-5">
+            <img class="h-8 w-auto rounded-sm" src="/icon/logo.gif" alt="Your Company" />
+            Dylan Morel Photographie.
+          </NuxtLink>
+          <div class="my-6 px-5">
+            <UiVeeInput v-model="search" placeholder="Search..." icon="lucide:search" />
+          </div>
+          <div class="flex h-full grow flex-col px-5 pb-8">
+            <div class="mb-10 flex flex-col gap-10">
+              <nav class="flex flex-col gap-1">
+                <template v-for="(n, i) in topNav" :key="i">
+                  <UiButton v-if="!n.items" :to="n.link" size="default" variant="ghost" class="justify-start gap-4 px-3">
+                    <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
+                    <span>{{ n.title }}</span>
+                  </UiButton>
+                  <UiCollapsible v-if="n.items">
+                    <UiCollapsibleTrigger as-child>
+                      <UiButton size="default" variant="ghost" class="group w-full justify-start gap-4 px-3">
+                        <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
+                        <span>{{ n.title }}</span>
+                        <Icon name="lucide:chevron-down" class="ml-auto size-4 text-muted-foreground transition group-data-[state=open]:rotate-180" />
+                      </UiButton>
+                    </UiCollapsibleTrigger>
+                    <UiCollapsibleContent class="flex flex-col gap-1.5 pr-2 pl-4">
+                      <template v-for="(item, index) in n.items" :key="index">
+                        <UiButton :to="item.link" size="sm" variant="ghost" class="justify-start gap-4 px-3">
+                          <span>{{ item.title }}</span>
+                        </UiButton>
+                      </template>
+                    </UiCollapsibleContent>
+                  </UiCollapsible>
+                </template>
+              </nav>
+            </div>
+          </div>
+          <UiDivider />
+          <div class="flex items-center gap-3 p-6">
+            <div class="flex items-center gap-3">
+              <UiAvatar :src="user.avatar" class="size-9" />
+              <div>
+                <p class="text-sm font-semibold">{{ user.username }}</p>
+                <p class="text-xs text-muted-foreground">{{ user.email }}</p>
               </div>
-              <div class="grid flex-1 text-left text-sm leading-tight">
-                <span class="truncate font-semibold">Acme Inc</span>
-                <span class="truncate text-xs">Enterprise</span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Platform</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton as-child>
-                  <a href="#">
-                    <Home />
-                    <span>Home</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter />
-      <SidebarRail />
-    </Sidebar>
-    <SidebarInset>
-      <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-        <div class="flex items-center gap-2 px-4">
-          <SidebarTrigger class="-ml-1" />
+            </div>
+            <UiTooltip>
+              <UiTooltipTrigger as-child>
+                <UiButton class="ml-auto shrink-0" size="icon-sm" variant="ghost">
+                  <Icon name="lucide:log-out" class="size-4 text-muted-foreground" />
+                </UiButton>
+              </UiTooltipTrigger>
+              <UiTooltipContent side="right" align="center">Logout</UiTooltipContent>
+            </UiTooltip>
+          </div>
         </div>
-      </header>
-      <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
-        </div>
-        <div class="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-      </div>
-    </SidebarInset>
-  </SidebarProvider>
-  <slot />
+      </UiScrollArea>
+    </aside>
+    <main class="flex-1">
+      <slot />
+    </main>
+  </div>
 </template>
+
+<script lang="ts" setup>
+const search = ref<string>('');
+
+const user = {
+  avatar: '/img/about/about.webp',
+  username: 'Dylan Morel',
+  email: 'moreldylan966@gmail.com'
+};
+
+const topNav = [
+  { title: 'Home', icon: 'lucide:home', link: '/dashboard' },
+  {
+    title: 'Photo',
+    icon: 'lucide:folder',
+    items: [
+      { title: 'About', link: '/gallery/about' },
+      { title: 'Accueil', link: '/gallery/accueil' },
+      { title: 'Contact', link: '/gallery/contact' },
+      { title: 'Galerie', link: '/gallery' }
+    ]
+  }
+];
+</script>

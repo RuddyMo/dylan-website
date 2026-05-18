@@ -3,7 +3,7 @@
     <div class="relative h-[calc(100vh-32px)] overflow-hidden" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @contextmenu.prevent>
       <div ref="containerDesktop" class="absolute flex h-full w-full gap-x-4 transition-transform duration-300 ease-out" :style="{ transform: `translateX(-${scrollPosition}px)` }">
         <div v-for="(image, index) in images" :key="index" class="relative flex min-w-full items-center justify-center">
-          <NuxtImg :src="image.url" alt="Slide" class="h-full w-auto object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" />
+          <img :src="image.url" alt="Slide" class="h-full w-auto object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" />
           <div class="absolute inset-0 z-10" />
         </div>
       </div>

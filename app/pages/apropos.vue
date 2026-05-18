@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <NuxtLayout name="navbar">
-      <AboutScroll />
-    </NuxtLayout>
-  </div>
+  <AboutScroll />
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+definePageMeta({
+  layout: 'navbar'
+});
+</script>

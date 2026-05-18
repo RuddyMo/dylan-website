@@ -1,6 +1,8 @@
 <template>
   <CustomCursor />
-  <NuxtPage class="bg-white" />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 <script setup lang="ts">
 onMounted(() => {

@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <NuxtLayout name="navbar">
-      <imageComponents />
-    </NuxtLayout>
-  </div>
+  <imageComponents />
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+definePageMeta({
+  layout: 'navbar'
+});
+</script>

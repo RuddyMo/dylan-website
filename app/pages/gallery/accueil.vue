@@ -8,20 +8,19 @@
     <UiDatatable :data="images" :options="options">
       <template #image="{ cellData }">
         <div class="flex items-center gap-3">
-          <img :src="cellData.url" :alt="cellData.name" class="w-12 h-12 object-cover rounded" />
+          <img :src="cellData.thumbUrl || cellData.url" :alt="cellData.name" class="w-12 h-12 object-cover rounded" />
           <span class="text-sm font-medium">{{ cellData.name }}</span>
         </div>
       </template>
 
       <template #actions="{ rowData }">
         <div class="flex items-center gap-2">
-          <button type="button" class="h-8 rounded border px-3 text-sm" @click="openPreview(rowData.url)">Voir</button>
+          <button type="button" class="h-8 rounded border px-3 text-sm" @click="openPreview(rowData.previewUrl || rowData.url)">Voir</button>
           <button type="button" class="h-8 rounded bg-red-600 px-3 text-sm text-white" @click="confirmDelete(rowData.path)">Supprimer</button>
         </div>
       </template>
     </UiDatatable>
 
-    <!-- Modal preview -->
     <div v-if="previewImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80" @click="closePreview">
       <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
         <img :src="previewImage" alt="Preview" class="max-h-[90vh] max-w-[90vw] object-contain" />
@@ -35,6 +34,7 @@
 
 <script lang="ts" setup>
 import { useStorageImages } from '~/composables/useStorageImages';
+import type { ImageItem } from '~/composables/useStorageImages';
 
 definePageMeta({
   layout: 'sidebar',
@@ -43,8 +43,8 @@ definePageMeta({
 
 const { fetchImagesFromFolder, deleteImage } = useStorageImages();
 
-const images = ref([]);
-const previewImage = ref(null);
+const images = ref<ImageItem[]>([]);
+const previewImage = ref<string | null>(null);
 
 const options = {
   dom: "<'overflow-auto't><'flex items-center justify-between gap-3 mt-4'lip>",
@@ -56,7 +56,7 @@ const options = {
   columns: [
     {
       title: 'Image',
-      data: null,
+      data: 'thumbUrl',
       defaultContent: '',
       render: {
         _: 'name',
@@ -86,9 +86,10 @@ const options = {
 
 const loadImages = async () => {
   images.value = await fetchImagesFromFolder('accueil');
+  console.log('images loaded', images.value.slice(0, 3));
 };
 
-const openPreview = (url) => {
+const openPreview = (url: string) => {
   previewImage.value = url;
   document.body.style.overflow = 'hidden';
 };
@@ -98,7 +99,7 @@ const closePreview = () => {
   document.body.style.overflow = 'auto';
 };
 
-const confirmDelete = async (path) => {
+const confirmDelete = async (path: string) => {
   if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
     const { success } = await deleteImage(path);
     if (success) {

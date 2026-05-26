@@ -15,14 +15,12 @@
 
       <template #actions="{ rowData }">
         <div class="flex items-center gap-2">
-          <UiButton size="sm" variant="outline" @click="openPreview(rowData.url)" class="gap-2">
-            <Icon name="lucide:eye" class="size-4" />
+          <button size="sm" variant="outline" @click="openPreview(rowData.url)" class="gap-2">
             Voir
-          </UiButton>
-          <UiButton size="sm" variant="destructive" @click="confirmDelete(rowData.path)" class="gap-2">
-            <Icon name="lucide:trash-2" class="size-4" />
+          </button>
+          <button size="sm" variant="destructive" @click="confirmDelete(rowData.path)" class="gap-2">
             Supprimer
-          </UiButton>
+          </button>
         </div>
       </template>
     </UiDatatable>
@@ -41,16 +39,18 @@
 
 <script lang="ts" setup>
 import { useStorageImages } from '~/composables/useStorageImages';
+import type { ImageItem } from '~/composables/useStorageImages';
 
 definePageMeta({
   layout: 'sidebar',
   middleware: 'auth-client'
 });
 
+
 const { fetchImagesFromFolder, deleteImage } = useStorageImages();
 
-const images = ref([]);
-const previewImage = ref(null);
+const images = ref<ImageItem[]>([]);
+const previewImage = ref<string | null>(null);
 
 const options = {
   dom: `<'${`overflow-auto`}'t>`,
@@ -60,9 +60,8 @@ const options = {
     {
       title: 'Image',
       data: null,
-      defaultContent: '',
       render: {
-        _: 'image',
+        _: 'name',
         display: '#image'
       },
       searchable: false
@@ -76,9 +75,8 @@ const options = {
     {
       title: 'Actions',
       data: null,
-      defaultContent: '',
       render: {
-        _: 'actions',
+        _: 'path',
         display: '#actions'
       },
       searchable: false,
@@ -91,7 +89,7 @@ const loadImages = async () => {
   images.value = await fetchImagesFromFolder('contact');
 };
 
-const openPreview = (url) => {
+const openPreview = (url: string) => {
   previewImage.value = url;
   document.body.style.overflow = 'hidden';
 };
@@ -101,7 +99,7 @@ const closePreview = () => {
   document.body.style.overflow = 'auto';
 };
 
-const confirmDelete = async (path) => {
+const confirmDelete = async (path: string) => {
   if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
     const { success } = await deleteImage(path);
     if (success) {

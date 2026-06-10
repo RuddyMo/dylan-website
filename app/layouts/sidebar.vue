@@ -1,6 +1,6 @@
 <template>
   <div class="flex min-h-screen">
-    <aside class="h-screen w-75 border-r bg-background">
+    <aside class="fixed left-0 top-0 h-screen w-75 border-r bg-background">
       <UiScrollArea class="size-full">
         <div class="flex h-screen flex-col pt-7">
           <NuxtLink to="#" class="flex w-full items-center gap-3 px-5">
@@ -49,7 +49,7 @@
             </div>
             <UiTooltip>
               <UiTooltipTrigger as-child>
-                <UiButton class="ml-auto shrink-0" size="icon-sm" variant="ghost">
+                <UiButton class="ml-auto shrink-0" size="icon-sm" variant="ghost" @click="logout">
                   <Icon name="lucide:log-out" class="size-4 text-muted-foreground" />
                 </UiButton>
               </UiTooltipTrigger>
@@ -59,14 +59,21 @@
         </div>
       </UiScrollArea>
     </aside>
-    <main class="flex-1">
+    <main class="flex-1 ml-75">
       <slot />
     </main>
   </div>
 </template>
 
 <script lang="ts" setup>
+const { $supabase } = useNuxtApp();
+
 const search = ref<string>('');
+
+const logout = async () => {
+  await $supabase.auth.signOut();
+  await navigateTo('/login');
+};
 
 const user = {
   avatar: '/img/about/about.webp',

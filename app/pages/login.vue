@@ -67,7 +67,7 @@ const login = async () => {
   errorMessage.value = '';
   loading.value = true;
 
-  const { data, error } = await $supabase.auth.signInWithPassword({
+  const { error } = await $supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value
   });
@@ -79,7 +79,6 @@ const login = async () => {
     errorMessage.value = error.message;
     return;
   }
-  console.log('Connecté :', data.user);
 
   await navigateTo('/dashboard');
 };

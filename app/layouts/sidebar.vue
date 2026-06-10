@@ -3,7 +3,7 @@
     <aside class="fixed left-0 top-0 h-screen w-75 border-r bg-background">
       <UiScrollArea class="size-full">
         <div class="flex h-screen flex-col pt-7">
-          <NuxtLink to="#" class="flex w-full items-center gap-3 px-5">
+          <NuxtLink to="/" class="flex w-full items-center gap-3 px-5">
             <img class="h-8 w-auto rounded-sm" src="/icon/logo.gif" alt="Your Company" />
             Dylan Morel Photographie.
           </NuxtLink>
@@ -14,13 +14,13 @@
             <div class="mb-10 flex flex-col gap-10">
               <nav class="flex flex-col gap-1">
                 <template v-for="(n, i) in topNav" :key="i">
-                  <UiButton v-if="!n.items" :to="n.link" size="default" variant="ghost" class="justify-start gap-4 px-3">
+                  <UiButton v-if="!n.items" :to="n.link" size="default" variant="ghost" class="justify-start gap-3 px-3">
                     <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
                     <span>{{ n.title }}</span>
                   </UiButton>
                   <UiCollapsible v-if="n.items">
                     <UiCollapsibleTrigger as-child>
-                      <UiButton size="default" variant="ghost" class="group w-full justify-start gap-4 px-3">
+                      <UiButton size="default" variant="ghost" class="group w-full justify-start gap-3 px-3">
                         <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
                         <span>{{ n.title }}</span>
                         <Icon name="lucide:chevron-down" class="ml-auto size-4 text-muted-foreground transition group-data-[state=open]:rotate-180" />
@@ -89,8 +89,16 @@ const topNav = [
     items: [
       { title: 'About', link: '/gallery/about' },
       { title: 'Accueil', link: '/gallery/accueil' },
-      { title: 'Contact', link: '/gallery/contact' },
-      { title: 'Galerie', link: '/gallery' }
+      { title: 'Contact', link: '/gallery/contact' }
+    ]
+  },
+  {
+    title: 'Galerie',
+    icon: 'lucide:images',
+    items: [
+      { title: 'Architecture', link: '/gallery/archi' },
+      { title: 'Art', link: '/gallery/art' },
+      { title: 'Voyage', link: '/gallery/voyage' }
     ]
   }
 ];

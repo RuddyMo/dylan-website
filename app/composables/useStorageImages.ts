@@ -13,7 +13,8 @@ export const useStorageImages = () => {
   if (!nuxtApp) {
     return {
       fetchImagesFromFolder: async (_folderPath: string): Promise<ImageItem[]> => [],
-      deleteImage: async (_path: string) => ({ success: false })
+      deleteImage: async (_path: string) => ({ success: false }),
+      uploadImage: async (_folderPath: string, _file: File, _fileName?: string) => ({ success: false })
     };
   }
 
@@ -21,7 +22,8 @@ export const useStorageImages = () => {
   if (!supabase) {
     return {
       fetchImagesFromFolder: async (_folderPath: string): Promise<ImageItem[]> => [],
-      deleteImage: async (_path: string) => ({ success: false })
+      deleteImage: async (_path: string) => ({ success: false }),
+      uploadImage: async (_folderPath: string, _file: File, _fileName?: string) => ({ success: false })
     };
   }
 
@@ -49,7 +51,9 @@ export const useStorageImages = () => {
         offset += pageSize;
       }
 
-      return allFiles.map((file: any): ImageItem => {
+      return allFiles
+        .filter((file) => file?.name && file.name !== '.emptyFolderPlaceholder')
+        .map((file: any): ImageItem => {
         const fullPath = `${folderPath}/${file.name}`;
 
         const { data: fullData } = supabase.storage.from('Photos').getPublicUrl(fullPath);
@@ -84,13 +88,31 @@ export const useStorageImages = () => {
 
   const deleteImage = async (path: string) => {
     try {
-      const { error } = await supabase.storage.from('Photos').remove([path]);
+      const { data, error } = await supabase.storage.from('Photos').remove([path]);
       if (error) return { success: false, error };
+      if (!data || data.length === 0) {
+        return { success: false, error: new Error('Aucun fichier supprimé (policy RLS DELETE manquante ?)') };
+      }
       return { success: true };
     } catch (e) {
       return { success: false, error: e };
     }
   };
 
-  return { fetchImagesFromFolder, deleteImage };
+  const uploadImage = async (folderPath: string, file: File, fileName?: string) => {
+    try {
+      const path = `${folderPath}/${sanitizeFilename(fileName ?? file.name)}`;
+      const { error } = await supabase.storage.from('Photos').upload(path, file, {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: file.type
+      });
+      if (error) return { success: false, error };
+      return { success: true, path };
+    } catch (e) {
+      return { success: false, error: e };
+    }
+  };
+
+  return { fetchImagesFromFolder, deleteImage, uploadImage };
 };

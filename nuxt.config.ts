@@ -58,7 +58,9 @@ export default defineNuxtConfig({
   },
 
   colorMode: {
-    storageKey: 'dylan-website-color-mode',
+    preference: 'light',
+    fallback: 'light',
+    storageKey: 'dylan-website-color-mode-v2',
     classSuffix: ''
   },
 

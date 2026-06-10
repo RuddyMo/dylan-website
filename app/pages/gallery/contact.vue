@@ -15,10 +15,10 @@
 
       <template #actions="{ rowData }">
         <div class="flex items-center gap-2">
-          <button size="sm" variant="outline" @click="openPreview(rowData.url)" class="gap-2">
+          <button type="button" class="h-8 rounded border px-3 text-sm" @click="openPreview(rowData.url)">
             Voir
           </button>
-          <button size="sm" variant="destructive" @click="confirmDelete(rowData.path)" class="gap-2">
+          <button type="button" class="h-8 rounded bg-red-600 px-3 text-sm text-white" @click="confirmDelete(rowData.path)">
             Supprimer
           </button>
         </div>

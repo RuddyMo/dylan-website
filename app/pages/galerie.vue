@@ -5,7 +5,7 @@
         <button
           v-for="(button, index) in buttons"
           :key="index"
-          class="text-sm relative cursor-none px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
+          class="text-sm text-black relative cursor-none px-1 before:inline-block before:content-['.'] before:absolute before:left-0 before:opacity-0 before:translate-x-2 before:transition-all before:duration-300 hover:before:opacity-100 hover:before:translate-x-0"
           :class="{ 'font-bold': typeSelected === button.type }"
           @click="typeSelected = button.type"
         >
@@ -93,9 +93,18 @@ const folderByType: FolderMap = {
 
 const currentFolder: ComputedRef<string> = computed(() => folderByType[typeSelected.value]);
 
+const preloadImage = (url: string): Promise<void> =>
+  new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => resolve();
+    img.src = url;
+  });
+
 const fetchNextPage = async (): Promise<void> => {
   if (isLoadingMore.value || !hasMore.value) return;
 
+  const isInitial = isInitialLoading.value;
   isLoadingMore.value = true;
 
   const { data, error } = await $supabase.storage.from('Photos').list(currentFolder.value, {
@@ -119,6 +128,7 @@ const fetchNextPage = async (): Promise<void> => {
     return;
   }
 
+  const newImages: ImageItem[] = [];
   for (const file of data) {
     if (!file.name) continue;
 
@@ -126,11 +136,19 @@ const fetchNextPage = async (): Promise<void> => {
 
     const { data: publicData } = $supabase.storage.from('Photos').getPublicUrl(fullPath);
 
-    images.value.push({
+    newImages.push({
       url: publicData.publicUrl,
       type: typeSelected.value
     });
   }
+
+  // Sur le premier lot, on attend que les images soient réellement téléchargées
+  // avant de retirer le skeleton, pour que la grille apparaisse entièrement chargée.
+  if (isInitial) {
+    await Promise.all(newImages.map((image) => preloadImage(image.url)));
+  }
+
+  images.value.push(...newImages);
 
   offset.value += data.length;
   isLoadingMore.value = false;

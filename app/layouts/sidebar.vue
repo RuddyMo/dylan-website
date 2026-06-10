@@ -49,7 +49,7 @@
             </div>
             <UiTooltip>
               <UiTooltipTrigger as-child>
-                <UiButton class="ml-auto shrink-0" size="icon-sm" variant="ghost">
+                <UiButton class="ml-auto shrink-0" size="icon-sm" variant="ghost" @click="logout">
                   <Icon name="lucide:log-out" class="size-4 text-muted-foreground" />
                 </UiButton>
               </UiTooltipTrigger>
@@ -66,7 +66,14 @@
 </template>
 
 <script lang="ts" setup>
+const { $supabase } = useNuxtApp();
+
 const search = ref<string>('');
+
+const logout = async () => {
+  await $supabase.auth.signOut();
+  await navigateTo('/login');
+};
 
 const user = {
   avatar: '/img/about/about.webp',

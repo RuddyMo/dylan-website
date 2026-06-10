@@ -86,7 +86,6 @@ const options = {
 
 const loadImages = async () => {
   images.value = await fetchImagesFromFolder('accueil');
-  console.log('images loaded', images.value.slice(0, 3));
 };
 
 const openPreview = (url: string) => {

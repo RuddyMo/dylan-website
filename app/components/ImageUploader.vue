@@ -18,7 +18,6 @@
           avant l'envoi.
         </UiDialogDescription>
 
-        <!-- Zone de drop -->
         <Motion as-child :variants="dropAreaContainer" initial="hidden" animate="visible">
           <div
             ref="dropzoneRef"
@@ -65,7 +64,6 @@
           <span>{{ errors[0] }}</span>
         </div>
 
-        <!-- Liste des fichiers -->
         <LayoutGroup id="file-list">
           <AnimatePresence>
             <Motion v-if="files.length > 0" layout="position" class="mt-1 space-y-2">
@@ -122,7 +120,6 @@
 
         <p v-if="uploadError" class="text-destructive mt-1 text-xs">{{ uploadError }}</p>
 
-        <!-- Actions -->
         <div class="mt-3 flex items-center justify-end gap-2">
           <UiDialogClose as-child>
             <UiButton variant="outline" size="sm" :disabled="isUploading">Annuler</UiButton>

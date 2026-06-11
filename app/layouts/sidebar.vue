@@ -1,6 +1,27 @@
 <template>
   <div class="flex min-h-screen">
-    <aside class="fixed left-0 top-0 h-screen w-75 border-r bg-background">
+    <Transition
+      enter-active-class="transition-opacity duration-300"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition-opacity duration-200"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div v-if="isSidebarOpen" class="fixed inset-0 z-40 bg-black/40 md:hidden" @click="isSidebarOpen = false" />
+    </Transition>
+
+    <aside
+      class="fixed left-0 top-0 z-50 h-screen w-75 border-r bg-background transition-transform duration-300 md:translate-x-0"
+      :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+    >
+      <button
+        class="absolute right-4 top-4 z-10 flex size-8 items-center justify-center md:hidden"
+        aria-label="Fermer le menu"
+        @click="isSidebarOpen = false"
+      >
+        <Icon name="lucide:x" class="size-5" />
+      </button>
       <UiScrollArea class="size-full">
         <div class="flex h-screen flex-col pt-7">
           <NuxtLink to="/" class="flex w-full items-center gap-3 px-5">
@@ -59,7 +80,17 @@
         </div>
       </UiScrollArea>
     </aside>
-    <main class="flex-1 ml-75">
+    <main class="flex-1 md:ml-75">
+      <div class="sticky top-0 z-30 flex items-center gap-3 border-b bg-background px-4 py-3 md:hidden">
+        <button
+          class="flex size-9 items-center justify-center"
+          aria-label="Ouvrir le menu"
+          @click="isSidebarOpen = true"
+        >
+          <Icon name="lucide:menu" class="size-6" />
+        </button>
+        <span class="text-sm font-semibold">Dylan Morel Photographie.</span>
+      </div>
       <slot />
     </main>
   </div>
@@ -67,8 +98,14 @@
 
 <script lang="ts" setup>
 const { $supabase } = useNuxtApp();
+const route = useRoute();
 
 const search = ref<string>('');
+const isSidebarOpen = ref<boolean>(false);
+
+watch(() => route.path, () => {
+  isSidebarOpen.value = false;
+});
 
 const logout = async () => {
   await $supabase.auth.signOut();

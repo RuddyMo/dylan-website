@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/html-self-closing -->
 <template>
   <input
     v-bind="props"

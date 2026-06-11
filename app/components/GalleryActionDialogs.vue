@@ -1,18 +1,20 @@
 <template>
-  <!-- Aperçu plein écran -->
   <UiDialog v-model:open="previewOpen">
-    <UiDialogContent class="max-w-[90vw] border-0 bg-transparent p-0 shadow-none">
+    <UiDialogContent
+      class="max-w-[90vw] border-0 bg-transparent p-0 shadow-none"
+      @click="previewOpen = false"
+    >
       <UiDialogTitle class="sr-only">{{ previewName ?? "Aperçu de l'image" }}</UiDialogTitle>
       <img
         v-if="previewUrl"
         :src="previewUrl"
         :alt="previewName ?? 'Aperçu'"
         class="mx-auto max-h-[85vh] max-w-full rounded-lg object-contain"
+        @click.stop
       >
     </UiDialogContent>
   </UiDialog>
 
-  <!-- Confirmation de suppression -->
   <UiConfirmDialog
     v-model:open="confirmOpen"
     title="Supprimer cette image ?"

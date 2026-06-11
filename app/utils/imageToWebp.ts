@@ -1,13 +1,5 @@
 import { embedCopyrightWebp } from './embedCopyrightXmp';
 
-/**
- * Convertit une image (JPEG/PNG/…) en WebP côté navigateur via le Canvas,
- * pour alléger le fichier avant l'upload. Reproduit le rôle du script Python.
- *
- * @param file    Le fichier image source.
- * @param quality Qualité WebP entre 0 et 1 (défaut 0.8).
- * @returns Un nouveau File au format WebP (même nom, extension .webp).
- */
 export const convertImageToWebp = (file: File, quality = 0.8): Promise<File> =>
   new Promise((resolve, reject) => {
     if (file.type === 'image/webp') {

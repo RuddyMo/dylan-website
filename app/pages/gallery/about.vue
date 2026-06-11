@@ -11,7 +11,7 @@
     <UiDatatable :data="images" :options="options">
       <template #image="{ cellData }">
         <div class="flex items-center gap-3">
-          <img :src="cellData.url" :alt="cellData.name" class="w-12 h-12 object-cover rounded" />
+          <img :src="thumbSrc(cellData.url)" :alt="cellData.name" loading="lazy" class="w-12 h-12 object-cover rounded" />
           <span class="text-sm font-medium">{{ cellData.name }}</span>
         </div>
       </template>
@@ -58,38 +58,8 @@ const dialogs = useTemplateRef('dialogs');
 
 const images = ref([]);
 
-const options = {
-  dom: `<'${`overflow-auto`}'t>`,
-  ordering: false,
-  pageLength: 10,
-  columns: [
-    {
-      title: 'Image',
-      data: null,
-      render: {
-        _: 'name',
-        display: '#image'
-      },
-      searchable: false
-    },
-    { title: 'Nom du fichier', data: 'name' },
-    {
-      title: 'Taille',
-      data: 'size',
-      render: (value) => `${(value / 1024).toFixed(2)} KB`
-    },
-    {
-      title: 'Actions',
-      data: null,
-      render: {
-        _: 'path',
-        display: '#actions'
-      },
-      searchable: false,
-      orderable: false
-    }
-  ]
-};
+const thumbSrc = useGalleryThumb();
+const options = galleryTableOptions();
 
 const loadImages = async () => {
   images.value = await fetchImagesFromFolder('about');

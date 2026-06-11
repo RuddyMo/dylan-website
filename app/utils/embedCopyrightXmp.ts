@@ -1,20 +1,6 @@
-/**
- * Réinjecte des métadonnées de copyright (paquet XMP) dans un fichier WebP.
- *
- * La conversion via <canvas> supprime toutes les métadonnées d'origine ; cette
- * fonction reconstruit le conteneur RIFF/WebP pour y ajouter un chunk « XMP »
- * (déclaré via l'en-tête étendu VP8X). Le copyright reste alors lisible par les
- * outils de type ExifTool sur le fichier original stocké, prouvant la paternité.
- *
- * Aucune dépendance externe : on manipule directement les octets du conteneur.
- */
-
 export interface CopyrightOptions {
-  /** Nom de l'auteur / photographe. */
   author?: string;
-  /** Année du copyright (défaut : année courante). */
   year?: number;
-  /** URL de la page de mentions / portfolio (xmpRights:WebStatement). */
   webStatement?: string;
 }
 
@@ -106,11 +92,6 @@ const concat = (parts: Uint8Array[]): Uint8Array => {
   return out;
 };
 
-/**
- * Ajoute un paquet XMP de copyright à un blob WebP et renvoie un nouveau blob.
- * En cas de format inattendu, le blob d'origine est renvoyé tel quel (l'upload
- * ne doit jamais échouer à cause de l'ajout de métadonnées).
- */
 export const embedCopyrightWebp = async (
   blob: Blob,
   width: number,

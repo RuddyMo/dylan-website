@@ -2,13 +2,13 @@
   <div class="p-6">
     <div class="mb-6 flex items-start justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-bold">Gestion des images - Accueil</h1>
+        <h1 class="text-2xl font-bold">Gestion des images - {{ title }}</h1>
         <p class="text-muted-foreground text-sm mt-1">{{ images.length }} image(s) trouvée(s)</p>
       </div>
-      <ImageUploader folder="accueil" @uploaded="loadImages" />
+      <ImageUploader :folder="uploadFolder" @uploaded="loadImages" />
     </div>
 
-    <UiDatatable :data="images" :options="options">
+    <UiDatatable :key="category" :data="images" :options="options">
       <template #image="{ cellData }">
         <div class="flex items-center gap-3">
           <img :src="cellData.url" :alt="cellData.name" loading="lazy" class="w-12 h-12 object-cover rounded" />
@@ -53,9 +53,20 @@ definePageMeta({
   middleware: 'auth-client'
 });
 
+const CATEGORY_TITLES: Record<string, string> = {
+  archi: 'Architecture',
+  art: 'Art',
+  voyage: 'Voyage'
+};
+
+const route = useRoute();
 const { fetchImagesFromFolder, deleteImage } = useStorageImages();
 
 const dialogs = useTemplateRef('dialogs');
+
+const category = computed(() => String(route.params.category));
+const title = computed(() => CATEGORY_TITLES[category.value] ?? 'Galerie');
+const uploadFolder = computed(() => `gallerie/${category.value}`);
 
 const images = ref<ImageItem[]>([]);
 
@@ -98,7 +109,11 @@ const options = {
 };
 
 const loadImages = async () => {
-  images.value = await fetchImagesFromFolder('accueil');
+  if (!CATEGORY_TITLES[category.value]) {
+    images.value = [];
+    return;
+  }
+  images.value = await fetchImagesFromFolder(`gallerie/${category.value}`);
 };
 
 const removeImage = async (path: string) => {
@@ -108,6 +123,8 @@ const removeImage = async (path: string) => {
   }
   return result;
 };
+
+watch(category, () => loadImages());
 
 onMounted(() => {
   loadImages();

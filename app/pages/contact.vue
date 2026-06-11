@@ -1,8 +1,8 @@
 <template>
   <div class="hidden lg:flex w-full h-[calc(100vh-76px)] overflow-hidden">
     <div class="w-1/2 relative">
-      <img src="/img/contact/contact.webp" class="w-full h-full object-cover grayscale" alt="Contact" />
-      <div class="absolute inset-0 bg-black bg-opacity-20" />
+      <img :src="contactImage" class="w-full h-full" alt="Contact" />
+      <div class="absolute inset-0 bg-black/20" />
     </div>
 
     <div class="w-1/2 bg-white flex items-center justify-center p-6">
@@ -93,8 +93,8 @@
 
   <div class="lg:hidden h-[calc(100vh-76px)] overflow-y-auto bg-white">
     <div class="relative h-48 overflow-hidden">
-      <img src="/img/contact/contact.webp" class="w-full h-full object-cover grayscale" alt="Contact" />
-      <div class="absolute inset-0 bg-black bg-opacity-40" />
+      <img :src="contactImage" class="w-full h-full object-cover grayscale" alt="Contact" />
+      <div class="absolute inset-0 bg-black/40" />
       <div class="absolute inset-0 flex items-center justify-center">
         <div class="text-center text-white">
           <h1 class="text-3xl font-light mb-2">Contactez-moi</h1>
@@ -188,11 +188,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 
 definePageMeta({
   layout: 'navbar'
 });
+
+const { images } = usePublicFolderImages('contact');
+const contactImage = computed(() => images.value[0] ?? '/img/contact/contact.webp');
 
 const form = reactive({
   name: '',

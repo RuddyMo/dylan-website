@@ -14,7 +14,7 @@
 
               <div class="w-1/2 h-full flex items-center justify-end overflow-hidden">
                 <div class="w-2/3 h-screen overflow-hidden">
-                  <img src="/img/about/about.webp" class="w-full h-full object-cover" alt="Dylan portrait" draggable="false" :style="{ transform: `translateX(${scrollPosition * 0.1}px)` }" />
+                  <img :src="portraitImg" class="w-full h-full object-cover" alt="Dylan portrait" draggable="false" :style="{ transform: `translateX(${scrollPosition * 0.1}px)` }" />
                 </div>
               </div>
             </div>
@@ -46,7 +46,7 @@
 
             <div class="h-1/2 w-full flex items-start justify-center">
               <div class="w-full h-72 overflow-hidden pl-20">
-                <img src="/img/about/photo.webp" class="w-auto h-full object-cover grayscale" alt="Photo" draggable="false" />
+                <img :src="photoImg" class="w-auto h-full object-cover grayscale" alt="Photo" draggable="false" />
               </div>
             </div>
           </div>
@@ -54,7 +54,7 @@
           <div class="flex flex-col min-w-[40%] relative">
             <div class="h-1/2 flex items-center justify-center">
               <div class="w-full h-80 overflow-hidden pl-20">
-                <img src="/img/about/archi.webp" class="w-auto h-full object-cover grayscale" alt="Photo" draggable="false" />
+                <img :src="archiImg" class="w-auto h-full object-cover grayscale" alt="Photo" draggable="false" />
               </div>
             </div>
 
@@ -82,7 +82,7 @@
 
             <div class="h-1/2 w-full flex items-center justify-center">
               <div class="w-full h-80 overflow-hidden pl-20">
-                <img src="/img/about/voyage.webp" class="w-auto h-full object-cover grayscale opacity-80" alt="Background" draggable="false" />
+                <img :src="voyageImg" class="w-auto h-full object-cover grayscale opacity-80" alt="Background" draggable="false" />
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@
           </div>
           <div class="h-1/2 flex items-center justify-center">
             <div class="w-48 h-80 overflow-hidden">
-              <img src="/img/about/about.webp" class="w-full h-full object-cover" alt="Dylan portrait" draggable="false" />
+              <img :src="portraitImg" class="w-full h-full object-cover" alt="Dylan portrait" draggable="false" />
             </div>
           </div>
         </div>
@@ -137,7 +137,7 @@
           </div>
           <div class="h-1/2 flex items-center justify-center">
             <div class="w-full h-72 overflow-hidden">
-              <img src="/img/about/photo.webp" class="w-auto h-full object-cover grayscale" alt="Photo" draggable="false" />
+              <img :src="photoImg" class="w-auto h-full object-cover grayscale" alt="Photo" draggable="false" />
             </div>
           </div>
         </div>
@@ -145,7 +145,7 @@
         <div class="h-screen w-full flex flex-col bg-white">
           <div class="h-1/2 flex items-center justify-center">
             <div class="w-48 h-64 overflow-hidden">
-              <img src="/img/about/archi.webp" class="w-auto h-full object-cover" alt="Photo" draggable="false" />
+              <img :src="archiImg" class="w-auto h-full object-cover" alt="Photo" draggable="false" />
             </div>
           </div>
           <div class="h-1/2 flex items-center justify-center px-8">
@@ -171,7 +171,7 @@
           </div>
           <div class="h-1/2 flex items-center justify-center">
             <div class="w-full h-80 overflow-hidden">
-              <img src="/img/about/voyage.webp" class="w-auto h-full object-cover grayscale opacity-80" alt="Background" draggable="false" />
+              <img :src="voyageImg" class="w-auto h-full object-cover grayscale opacity-80" alt="Background" draggable="false" />
             </div>
           </div>
         </div>
@@ -181,7 +181,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+
+// Images gérées depuis l'admin /gallery/about (repli sur les fichiers statiques).
+const { images: aboutImages } = usePublicFolderImages('about');
+const portraitImg = computed(() => aboutImages.value[0] ?? '/img/about/about.webp');
+const photoImg = computed(() => aboutImages.value[1] ?? '/img/about/photo.webp');
+const archiImg = computed(() => aboutImages.value[2] ?? '/img/about/archi.webp');
+const voyageImg = computed(() => aboutImages.value[3] ?? '/img/about/voyage.webp');
 
 const touchStartX = ref(0);
 const touchStartY = ref(0);

@@ -158,7 +158,7 @@
   const avgSize = computed(() => (totalCount.value ? totalSize.value / totalCount.value : 0));
   const maxCount = computed(() => Math.max(0, ...stats.value.map((cat) => cat.count)));
 
-  const QUOTA = 1024 * 1024 * 1024; // 1 Go (plan gratuit Supabase)
+  const QUOTA = 1024 * 1024 * 1024;
   const circumference = 2 * Math.PI * 42;
   const usedPct = computed(() => Math.min(100, (totalSize.value / QUOTA) * 100));
   const dashOffset = computed(() => circumference * (1 - usedPct.value / 100));

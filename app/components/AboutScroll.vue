@@ -183,7 +183,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 
-// Images gérées depuis l'admin /gallery/about (repli sur les fichiers statiques).
 const { images: aboutImages } = usePublicFolderImages('about');
 const portraitImg = computed(() => aboutImages.value[0] ?? '/img/about/about.webp');
 const photoImg = computed(() => aboutImages.value[1] ?? '/img/about/photo.webp');

@@ -1,11 +1,3 @@
-/**
- * Charge (côté client) les images d'un dossier public du bucket Supabase
- * `Photos` et renvoie leurs URLs déjà optimisées (WebP redimensionné via IPX),
- * triées par nom de fichier.
- *
- * Utilisé par les pages publiques (contact, à propos) pour afficher les images
- * gérées depuis l'administration `/gallery/*`, au lieu de fichiers statiques.
- */
 export const usePublicFolderImages = (folder: string) => {
   const { $supabase } = useNuxtApp();
   const img = useImage();

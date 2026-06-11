@@ -1,3 +1,5 @@
+import { embedCopyrightWebp } from './embedCopyrightXmp';
+
 /**
  * Convertit une image (JPEG/PNG/…) en WebP côté navigateur via le Canvas,
  * pour alléger le fichier avant l'upload. Reproduit le rôle du script Python.
@@ -8,7 +10,6 @@
  */
 export const convertImageToWebp = (file: File, quality = 0.8): Promise<File> =>
   new Promise((resolve, reject) => {
-    // Déjà en WebP : on ne reconvertit pas.
     if (file.type === 'image/webp') {
       resolve(file);
       return;
@@ -33,13 +34,14 @@ export const convertImageToWebp = (file: File, quality = 0.8): Promise<File> =>
       context.drawImage(img, 0, 0);
 
       canvas.toBlob(
-        (blob) => {
+        async (blob) => {
           if (!blob) {
             reject(new Error('La conversion WebP a échoué'));
             return;
           }
           const webpName = `${file.name.replace(/\.[^.]+$/, '')}.webp`;
-          resolve(new File([blob], webpName, { type: 'image/webp' }));
+          const stamped = await embedCopyrightWebp(blob, canvas.width, canvas.height);
+          resolve(new File([stamped], webpName, { type: 'image/webp' }));
         },
         'image/webp',
         quality

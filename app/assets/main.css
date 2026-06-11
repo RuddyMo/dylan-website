@@ -21,6 +21,13 @@ a {
     cursor: none;
 }
 
+/* Décourage le glisser-déposer et la sélection des images (protection des droits). */
+img {
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
 
 
 

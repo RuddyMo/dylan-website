@@ -158,6 +158,7 @@
   const emit = defineEmits<{ uploaded: [] }>();
 
   const { uploadImage, fetchImagesFromFolder } = useStorageImages();
+  const { success: toastSuccess } = useToast();
 
   const maxSize = 100 * 1024 * 1024; // 100 Mo
   const maxFiles = 10;
@@ -176,7 +177,6 @@
   const done = ref(0);
   const uploadError = ref<string | null>(null);
 
-  // URLs de prévisualisation locales (révoquées à la fermeture / au démontage).
   const previewCache = new Map<string, string>();
   const previewUrl = (entry: UploadFile) => {
     if (!previewCache.has(entry.id)) {
@@ -230,7 +230,14 @@
 
     isUploading.value = false;
 
-    if (successCount > 0) emit("uploaded");
+    if (successCount > 0) {
+      emit("uploaded");
+      toastSuccess(
+        successCount > 1
+          ? `${successCount} images importées avec succès`
+          : "Image importée avec succès"
+      );
+    }
 
     if (failures.length) {
       uploadError.value = `Certaines images ont échoué — ${failures.join(" ; ")}`;

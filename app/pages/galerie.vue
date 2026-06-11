@@ -30,9 +30,10 @@
       <div v-else class="grid-gallery">
         <div v-for="image in filteredImages" :key="image.url" class="grid-item relative" @click="openModal($event, image.url)">
           <img
-            :src="image.url"
+            :src="gridSrc(image.url)"
             alt="gal"
             loading="lazy"
+            decoding="async"
             class="block w-full h-[200px] min-h-0 object-cover select-none transition-opacity duration-300 hover:opacity-90 md:h-[33vh] md:min-h-40 md:w-auto pointer-events-none"
             draggable="false"
             style="-webkit-user-drag: none"
@@ -48,9 +49,36 @@
       </div>
     </div>
 
-    <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90" @click="closeModal">
-      <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
-        <img :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain select-none" draggable="false" style="-webkit-user-drag: none" />
+    <div
+      v-if="selectedImage"
+      ref="modalBackdrop"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+      @click="closeModal"
+    >
+      <div ref="modalFrame" class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
+        <!-- Vignette basse déf (déjà en cache) : agrandissement instantané, floutée tant que la HD charge -->
+        <img
+          :src="selectedThumb"
+          aria-hidden="true"
+          class="block max-h-[90vh] max-w-[90vw] object-contain select-none transition duration-700"
+          :class="imageLoading ? 'blur-lg' : 'blur-0'"
+          draggable="false"
+          style="-webkit-user-drag: none"
+        />
+        <!-- Image haute définition, en fondu une fois chargée -->
+        <img
+          :src="previewSrc(selectedImage)"
+          alt="Selected"
+          class="absolute inset-0 h-full w-full object-contain select-none transition-opacity duration-700"
+          :class="imageLoading ? 'opacity-0' : 'opacity-100'"
+          draggable="false"
+          style="-webkit-user-drag: none"
+          @load="imageLoading = false"
+        />
+        <!-- Loader pendant le chargement de la HD -->
+        <div v-if="imageLoading" class="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <span class="block size-10 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+        </div>
         <button class="absolute -top-10 right-0 p-2 text-white hover:text-gray-300" @click="closeModal">Fermer</button>
       </div>
     </div>
@@ -59,6 +87,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch, type ComputedRef, type Ref } from 'vue';
+import gsap from 'gsap';
 import type { ButtonItem, ImageItem, FolderMap, GalleryType } from '~/types/IGalerieImage';
 
 definePageMeta({
@@ -66,6 +95,12 @@ definePageMeta({
 });
 
 const { $supabase } = useNuxtApp();
+const img = useImage();
+
+// Versions optimisées (redimensionnées + WebP) servies via l'optimiseur d'image.
+// La grille n'a besoin que de ~600px ; la modale plein écran de ~1600px.
+const gridSrc = (url: string): string => img(url, { width: 600, quality: 70, format: 'webp' });
+const previewSrc = (url: string): string => img(url, { width: 2000, quality: 88, format: 'webp' });
 
 const buttons: ButtonItem[] = [
   { label: 'Architecture', type: 'archi' },
@@ -142,10 +177,8 @@ const fetchNextPage = async (): Promise<void> => {
     });
   }
 
-  // Sur le premier lot, on attend que les images soient réellement téléchargées
-  // avant de retirer le skeleton, pour que la grille apparaisse entièrement chargée.
   if (isInitial) {
-    await Promise.all(newImages.map((image) => preloadImage(image.url)));
+    await Promise.all(newImages.map((image) => preloadImage(gridSrc(image.url))));
   }
 
   images.value.push(...newImages);
@@ -158,15 +191,71 @@ const fetchNextPage = async (): Promise<void> => {
 const filteredImages: ComputedRef<ImageItem[]> = computed(() => images.value);
 
 const selectedImage: Ref<string | null> = ref<string | null>(null);
+const selectedThumb: Ref<string> = ref<string>('');
+const imageLoading: Ref<boolean> = ref<boolean>(false);
+const modalBackdrop: Ref<HTMLElement | null> = ref<HTMLElement | null>(null);
+const modalFrame: Ref<HTMLElement | null> = ref<HTMLElement | null>(null);
 
-const openModal = (_event: MouseEvent, imageUrl: string): void => {
+// Position de la vignette cliquée, pour l'animation d'agrandissement (FLIP).
+let thumbRect: DOMRect | null = null;
+
+// Décalage entre la vignette d'origine et la modale centrée (technique FLIP).
+const flipDeltas = (): { x: number; y: number; scaleX: number; scaleY: number } | null => {
+  if (!modalFrame.value || !thumbRect) return null;
+  const target = modalFrame.value.getBoundingClientRect();
+  if (target.width === 0 || target.height === 0) return null;
+  return {
+    x: thumbRect.left - target.left,
+    y: thumbRect.top - target.top,
+    scaleX: thumbRect.width / target.width,
+    scaleY: thumbRect.height / target.height
+  };
+};
+
+const openModal = async (event: MouseEvent, imageUrl: string): Promise<void> => {
+  thumbRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+
+  selectedThumb.value = gridSrc(imageUrl); // vignette en cache → agrandissement instantané
+  imageLoading.value = true;
   selectedImage.value = imageUrl;
   document.body.style.overflow = 'hidden';
+
+  await nextTick();
+  const deltas = flipDeltas();
+  if (!modalBackdrop.value || !modalFrame.value || !deltas) return;
+
+  gsap.fromTo(modalBackdrop.value, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+  gsap.fromTo(
+    modalFrame.value,
+    { x: deltas.x, y: deltas.y, scaleX: deltas.scaleX, scaleY: deltas.scaleY, transformOrigin: 'top left' },
+    { x: 0, y: 0, scaleX: 1, scaleY: 1, duration: 0.55, ease: 'power3.out' }
+  );
 };
 
 const closeModal = (): void => {
-  selectedImage.value = null;
-  document.body.style.overflow = 'auto';
+  const deltas = flipDeltas();
+  const finish = (): void => {
+    selectedImage.value = null;
+    imageLoading.value = false;
+    document.body.style.overflow = 'auto';
+  };
+
+  if (!modalBackdrop.value || !modalFrame.value || !deltas) {
+    finish();
+    return;
+  }
+
+  gsap.to(modalBackdrop.value, { opacity: 0, duration: 0.4, ease: 'power2.in' });
+  gsap.to(modalFrame.value, {
+    x: deltas.x,
+    y: deltas.y,
+    scaleX: deltas.scaleX,
+    scaleY: deltas.scaleY,
+    transformOrigin: 'top left',
+    duration: 0.45,
+    ease: 'power3.in',
+    onComplete: finish
+  });
 };
 
 function handleKeyDown(e: KeyboardEvent): void {

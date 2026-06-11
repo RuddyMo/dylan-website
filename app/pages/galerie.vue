@@ -30,9 +30,10 @@
       <div v-else class="grid-gallery">
         <div v-for="image in filteredImages" :key="image.url" class="grid-item relative" @click="openModal($event, image.url)">
           <img
-            :src="image.url"
+            :src="gridSrc(image.url)"
             alt="gal"
             loading="lazy"
+            decoding="async"
             class="block w-full h-[200px] min-h-0 object-cover select-none transition-opacity duration-300 hover:opacity-90 md:h-[33vh] md:min-h-40 md:w-auto pointer-events-none"
             draggable="false"
             style="-webkit-user-drag: none"
@@ -48,10 +49,41 @@
       </div>
     </div>
 
-    <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90" @click="closeModal">
+    <div
+      v-if="selectedImage"
+      ref="modalPanel"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-white"
+      @click="closeModal"
+    >
+      <button
+        class="absolute right-5 top-5 z-10 flex size-11 items-center justify-center rounded-full bg-black/5 text-black/60 transition hover:bg-black/10 hover:text-black"
+        aria-label="Fermer"
+        @click.stop="closeModal"
+      >
+        <Icon name="lucide:x" class="size-5" />
+      </button>
+
       <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
-        <img :src="selectedImage" alt="Selected" class="max-h-[90vh] max-w-[90vw] object-contain select-none" draggable="false" style="-webkit-user-drag: none" />
-        <button class="absolute -top-10 right-0 p-2 text-white hover:text-gray-300" @click="closeModal">Fermer</button>
+        <img
+          :src="selectedThumb"
+          aria-hidden="true"
+          class="block max-h-[90vh] max-w-[90vw] object-contain select-none transition duration-700"
+          :class="imageLoading ? 'blur-lg' : 'blur-0'"
+          draggable="false"
+          style="-webkit-user-drag: none"
+        />
+        <img
+          :src="previewSrc(selectedImage)"
+          alt="Selected"
+          class="absolute inset-0 h-full w-full object-contain select-none transition-opacity duration-700"
+          :class="imageLoading ? 'opacity-0' : 'opacity-100'"
+          draggable="false"
+          style="-webkit-user-drag: none"
+          @load="imageLoading = false"
+        />
+        <div v-if="imageLoading" class="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <span class="block size-10 animate-spin rounded-full border-2 border-black/15 border-t-black/70" />
+        </div>
       </div>
     </div>
   </div>
@@ -59,6 +91,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch, type ComputedRef, type Ref } from 'vue';
+import gsap from 'gsap';
 import type { ButtonItem, ImageItem, FolderMap, GalleryType } from '~/types/IGalerieImage';
 
 definePageMeta({
@@ -66,6 +99,10 @@ definePageMeta({
 });
 
 const { $supabase } = useNuxtApp();
+const img = useImage();
+
+const gridSrc = (url: string): string => img(url, { width: 600, quality: 70, format: 'webp' });
+const previewSrc = (url: string): string => img(url, { width: 2000, quality: 88, format: 'webp' });
 
 const buttons: ButtonItem[] = [
   { label: 'Architecture', type: 'archi' },
@@ -142,10 +179,8 @@ const fetchNextPage = async (): Promise<void> => {
     });
   }
 
-  // Sur le premier lot, on attend que les images soient réellement téléchargées
-  // avant de retirer le skeleton, pour que la grille apparaisse entièrement chargée.
   if (isInitial) {
-    await Promise.all(newImages.map((image) => preloadImage(image.url)));
+    await Promise.all(newImages.map((image) => preloadImage(gridSrc(image.url))));
   }
 
   images.value.push(...newImages);
@@ -158,15 +193,44 @@ const fetchNextPage = async (): Promise<void> => {
 const filteredImages: ComputedRef<ImageItem[]> = computed(() => images.value);
 
 const selectedImage: Ref<string | null> = ref<string | null>(null);
+const selectedThumb: Ref<string> = ref<string>('');
+const imageLoading: Ref<boolean> = ref<boolean>(false);
+const modalPanel: Ref<HTMLElement | null> = ref<HTMLElement | null>(null);
 
-const openModal = (_event: MouseEvent, imageUrl: string): void => {
+const openModal = async (_event: MouseEvent, imageUrl: string): Promise<void> => {
+  selectedThumb.value = gridSrc(imageUrl);
+  imageLoading.value = true;
   selectedImage.value = imageUrl;
   document.body.style.overflow = 'hidden';
+
+  await nextTick();
+  if (!modalPanel.value) return;
+
+  gsap.fromTo(
+    modalPanel.value,
+    { yPercent: 100 },
+    { yPercent: 0, duration: 0.6, ease: 'power3.out' }
+  );
 };
 
 const closeModal = (): void => {
-  selectedImage.value = null;
-  document.body.style.overflow = 'auto';
+  const finish = (): void => {
+    selectedImage.value = null;
+    imageLoading.value = false;
+    document.body.style.overflow = 'auto';
+  };
+
+  if (!modalPanel.value) {
+    finish();
+    return;
+  }
+
+  gsap.to(modalPanel.value, {
+    yPercent: 100,
+    duration: 0.5,
+    ease: 'power3.in',
+    onComplete: finish
+  });
 };
 
 function handleKeyDown(e: KeyboardEvent): void {

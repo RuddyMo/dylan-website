@@ -11,7 +11,7 @@
     <UiDatatable :key="category" :data="images" :options="options">
       <template #image="{ cellData }">
         <div class="flex items-center gap-3">
-          <img :src="cellData.url" :alt="cellData.name" loading="lazy" class="w-12 h-12 object-cover rounded" />
+          <img :src="thumbSrc(cellData.url)" :alt="cellData.name" loading="lazy" class="w-12 h-12 object-cover rounded" />
           <span class="text-sm font-medium">{{ cellData.name }}</span>
         </div>
       </template>
@@ -70,43 +70,8 @@ const uploadFolder = computed(() => `gallerie/${category.value}`);
 
 const images = ref<ImageItem[]>([]);
 
-const options = {
-  dom: "<'overflow-auto't><'flex items-center justify-between gap-3 mt-4'lip>",
-  paging: true,
-  pageLength: 10,
-  lengthMenu: [10, 25, 50, 100],
-  info: true,
-  ordering: false,
-  columns: [
-    {
-      title: 'Image',
-      data: null,
-      defaultContent: '',
-      render: {
-        _: 'name',
-        display: '#image'
-      },
-      searchable: false
-    },
-    { title: 'Nom du fichier', data: 'name' },
-    {
-      title: 'Taille',
-      data: 'size',
-      render: (value) => `${(value / 1024).toFixed(2)} KB`
-    },
-    {
-      title: 'Actions',
-      data: null,
-      defaultContent: '',
-      render: {
-        _: 'path',
-        display: '#actions'
-      },
-      searchable: false,
-      orderable: false
-    }
-  ]
-};
+const thumbSrc = useGalleryThumb();
+const options = galleryTableOptions();
 
 const loadImages = async () => {
   if (!CATEGORY_TITLES[category.value]) {

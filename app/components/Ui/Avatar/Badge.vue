@@ -16,7 +16,6 @@
   const props = withDefaults(
     defineProps<
       PrimitiveProps & {
-        /** Custom class(es) to add to the element */
         class?: any;
       }
     >(),

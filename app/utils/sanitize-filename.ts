@@ -14,10 +14,10 @@ export const sanitizeFilename = (filename: string): string => {
   const slug = (value: string) =>
     value
       .normalize('NFD')
-      .replace(/[̀-ͯ]/g, '') // diacritiques
-      .replace(/[^a-zA-Z0-9._-]+/g, '-') // caractères non sûrs
-      .replace(/-+/g, '-') // tirets multiples
-      .replace(/^-|-$/g, '') // tirets en bord
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-zA-Z0-9._-]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
       .toLowerCase();
 
   const safeBase = slug(base) || 'image';

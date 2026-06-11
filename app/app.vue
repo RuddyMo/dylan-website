@@ -3,13 +3,17 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <UiToaster />
 </template>
 <script setup lang="ts">
 onMounted(() => {
-  document.addEventListener('contextmenu', (e) => {
-    if (e.target instanceof HTMLImageElement) {
-      e.preventDefault();
+  const blockOnImages = (event: Event) => {
+    if (event.target instanceof HTMLImageElement) {
+      event.preventDefault();
     }
-  });
+  };
+
+  document.addEventListener('contextmenu', blockOnImages);
+  document.addEventListener('dragstart', blockOnImages);
 });
 </script>

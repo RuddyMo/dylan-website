@@ -34,19 +34,13 @@
   import type { HTMLAttributes } from "vue";
 
   export type DataTablesNamedSlotProps<T> = {
-    /** The data to show in the cell (from the `columns.data` configuration) */
     cellData: keyof T | null;
-    /** The column index for the cell (0-based index) */
     colIndex: number;
-    /** The data object for the whole row */
     rowData: T | Record<string, any>;
-    /** Row index for the cell (data index, not the display index) */
     rowIndex: number;
-    /** Orthogonal data type */
     type: string;
   };
 
-  // @ts-expect-error - We are not creating a declaration file for this library
   window.JSZip = JSZip;
 </script>
 
@@ -57,32 +51,10 @@
 
   const props = withDefaults(
     defineProps<{
-      /**
-       * The data to display in the table
-       */
       data?: Config["data"];
-      /**
-       * The CSS class to apply to the table
-       *
-       * @default "nowrap hover order-column row-border stripe display"
-       * @see https://datatables.net/manual/styling/classes
-       */
       class?: HTMLAttributes["class"];
-      /**
-       * The columns to display in the table
-       */
       columns?: Config["columns"];
-      /**
-       * Load data for the table's content from an Ajax source.
-       *
-       * @see https://datatables.net/manual/ajax#Ajax-configuration
-       */
       ajax?: Config["ajax"];
-      /**
-       * Additional options for the DataTable
-       *
-       * @see https://datatables.net/manual/options
-       */
       options?: Config;
     }>(),
     {
@@ -100,13 +72,7 @@
   });
 
   defineExpose({
-    /**
-     * The DataTable instance
-     */
     table,
-    /**
-     * The DataTable instance's DataTables API
-     */
     dt: computed(() => table.value?.dt),
   });
 </script>

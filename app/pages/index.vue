@@ -1,4 +1,5 @@
 <template>
+  <WelcomeIntro />
   <imageComponents />
 </template>
 <script setup lang="ts">

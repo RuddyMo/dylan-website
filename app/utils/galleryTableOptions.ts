@@ -25,7 +25,7 @@ export const galleryTableOptions = (): Config => ({
       title: 'Image',
       data: null,
       defaultContent: '',
-      responsivePriority: 1, // toujours visible
+      responsivePriority: 1,
       render: {
         _: 'name',
         display: '#image'
@@ -43,7 +43,7 @@ export const galleryTableOptions = (): Config => ({
       title: 'Actions',
       data: null,
       defaultContent: '',
-      responsivePriority: 2, // toujours visible
+      responsivePriority: 2,
       render: {
         _: 'path',
         display: '#actions'

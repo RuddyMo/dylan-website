@@ -1,14 +1,30 @@
 <template>
   <div class="bg-white">
-    <div class="relative h-[calc(100vh-32px)] overflow-hidden" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @contextmenu.prevent>
-      <div ref="containerDesktop" class="absolute flex h-full w-full gap-x-4 ease-out" :class="isDragging ? '' : 'transition-transform duration-300'" :style="{ transform: `translateX(-${scrollPosition}px)` }">
+    <div
+      v-if="isHorizontal"
+      class="relative h-[calc(100vh-32px)] overflow-hidden"
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
+      @contextmenu.prevent
+    >
+      <div
+        ref="containerDesktop"
+        class="absolute flex h-full w-full gap-x-4 ease-out"
+        :class="isDragging ? '' : 'transition-transform duration-300'"
+        :style="{ transform: `translateX(-${scrollPosition}px)` }"
+      >
         <div v-for="(image, index) in images" :key="index" class="relative flex min-w-full items-center justify-center">
           <img :src="image.url" alt="Slide" class="h-full w-auto object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" />
           <div class="absolute inset-0 z-10" />
         </div>
       </div>
-
       <ScrollBar :progress="scrollProgress" />
+    </div>
+    <div v-else class="flex flex-col gap-y-4 px-2 py-2" @contextmenu.prevent>
+      <div v-for="(image, index) in images" :key="index" class="flex items-center justify-center">
+        <img :src="image.url" alt="Slide" class="h-auto w-full object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" />
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +40,9 @@ interface AccueilImage {
 
 const containerDesktop: Ref<HTMLElement | null> = ref(null);
 const images: Ref<AccueilImage[]> = ref([]);
+
+const isHorizontal: Ref<boolean> = ref(true);
+let mediaQuery: MediaQueryList | null = null;
 
 const scrollPosition: Ref<number> = ref(0);
 const maxScroll: Ref<number> = ref(0);
@@ -97,12 +116,18 @@ const handleTouchEnd = (): void => {
 };
 
 const handleWheel = (e: WheelEvent): void => {
+  if (!isHorizontal.value) return;
   e.preventDefault();
   updateScrollPosition(e.deltaY);
 };
 
 const handleResize = () => {
   recalcMaxScroll();
+};
+
+const handleMediaChange = (e: MediaQueryListEvent): void => {
+  isHorizontal.value = e.matches;
+  nextTick(recalcMaxScroll);
 };
 
 const preventDrag = (e: Event): void => {
@@ -112,6 +137,10 @@ const preventDrag = (e: Event): void => {
 };
 
 onMounted(async () => {
+  mediaQuery = window.matchMedia('(min-width: 768px)');
+  isHorizontal.value = mediaQuery.matches;
+  mediaQuery.addEventListener('change', handleMediaChange);
+
   await fetchImages();
 
   window.addEventListener('wheel', handleWheel, { passive: false });
@@ -120,6 +149,7 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+  mediaQuery?.removeEventListener('change', handleMediaChange);
   window.removeEventListener('wheel', handleWheel);
   window.removeEventListener('resize', handleResize);
   document.removeEventListener('dragstart', preventDrag);

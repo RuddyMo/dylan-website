@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white">
     <div class="relative h-[calc(100vh-32px)] overflow-hidden" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @contextmenu.prevent>
-      <div ref="containerDesktop" class="absolute flex h-full w-full gap-x-4 transition-transform duration-300 ease-out" :style="{ transform: `translateX(-${scrollPosition}px)` }">
+      <div ref="containerDesktop" class="absolute flex h-full w-full gap-x-4 ease-out" :class="isDragging ? '' : 'transition-transform duration-300'" :style="{ transform: `translateX(-${scrollPosition}px)` }">
         <div v-for="(image, index) in images" :key="index" class="relative flex min-w-full items-center justify-center">
           <img :src="image.url" alt="Slide" class="h-full w-auto object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" />
           <div class="absolute inset-0 z-10" />
@@ -72,11 +72,13 @@ const fetchImages = async (): Promise<void> => {
 };
 
 const touchStartX: Ref<number | null> = ref(null);
+const isDragging: Ref<boolean> = ref(false);
 
 const handleTouchStart = (e: TouchEvent): void => {
   const touch = e.touches.item(0);
   if (!touch) return;
   touchStartX.value = touch.clientX;
+  isDragging.value = true;
 };
 
 const handleTouchMove = (e: TouchEvent): void => {
@@ -84,12 +86,14 @@ const handleTouchMove = (e: TouchEvent): void => {
   const touch = e.touches.item(0);
   if (!touch) return;
   const dx = touchStartX.value - touch.clientX;
+  touchStartX.value = touch.clientX;
   updateScrollPosition(dx);
   e.preventDefault();
 };
 
 const handleTouchEnd = (): void => {
   touchStartX.value = null;
+  isDragging.value = false;
 };
 
 const handleWheel = (e: WheelEvent): void => {

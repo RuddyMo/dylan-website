@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white" @contextmenu.prevent>
+  <div class="bg-white pb-12" @contextmenu.prevent>
     <div class="max-w-[90%] mx-auto">
       <div class="flex justify-center gap-4 mb-2">
         <button

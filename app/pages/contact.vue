@@ -1,5 +1,5 @@
 <template>
-  <div class="hidden lg:flex w-full h-[calc(100vh-76px)] overflow-hidden">
+  <div class="hidden lg:flex w-full h-[calc(100dvh-76px)] overflow-hidden">
     <div class="w-1/2 relative">
       <img :src="contactImage" class="w-full h-full" alt="Contact" />
       <div class="absolute inset-0 bg-black/20" />
@@ -91,7 +91,7 @@
     </div>
   </div>
 
-  <div class="lg:hidden h-[calc(100vh-76px)] overflow-y-auto bg-white">
+  <div class="lg:hidden h-[calc(100dvh-76px)] overflow-y-auto bg-white">
     <div class="relative h-48 overflow-hidden">
       <img :src="contactImage" class="w-full h-full object-cover grayscale" alt="Contact" />
       <div class="absolute inset-0 bg-black/40" />

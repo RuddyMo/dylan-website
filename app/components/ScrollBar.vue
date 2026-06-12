@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute bottom-10 left-0 w-full h-[2px] bg-gray-200 z-50">
+  <div class="absolute left-0 w-full h-[2px] bg-gray-200 z-50" :class="bottomClass">
     <div 
       class="h-full bg-black transition-all duration-300 ease-out" 
       :style="{ width: `${progress}%` }"
@@ -29,6 +29,10 @@ defineProps({
     type: String,
     default: 'bottom',
     validator: (value) => ['bottom', 'top'].includes(value)
+  },
+  bottomClass: {
+    type: String,
+    default: 'bottom-10'
   }
 });
 </script>

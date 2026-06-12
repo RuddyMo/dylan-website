@@ -2,7 +2,7 @@
   <div class="bg-white">
     <div
       v-if="isHorizontal"
-      class="relative h-[calc(100vh-32px)] overflow-hidden"
+      class="relative w-full overflow-hidden"
       @touchstart="handleTouchStart"
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
@@ -10,18 +10,18 @@
     >
       <div
         ref="containerDesktop"
-        class="absolute flex h-full w-full gap-x-4 ease-out"
+        class="flex w-full gap-x-4 ease-out"
         :class="isDragging ? '' : 'transition-transform duration-300'"
         :style="{ transform: `translateX(-${scrollPosition}px)` }"
       >
         <div v-for="(image, index) in images" :key="index" class="relative flex min-w-full items-center justify-center">
-          <img :src="image.url" alt="Slide" class="h-full w-auto object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" />
+          <img :src="image.url" alt="Slide" class="max-h-[calc(100dvh-72px)] max-w-full w-auto object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" />
           <div class="absolute inset-0 z-10" />
         </div>
       </div>
-      <ScrollBar :progress="scrollProgress" />
+      <ScrollBar :progress="scrollProgress" bottom-class="bottom-0" />
     </div>
-    <div v-else class="flex flex-col gap-y-4 px-2 py-2" @contextmenu.prevent>
+    <div v-else class="flex flex-col gap-y-4 px-2 pt-2 pb-12" @contextmenu.prevent>
       <div v-for="(image, index) in images" :key="index" class="flex items-center justify-center">
         <img :src="image.url" alt="Slide" class="h-auto w-full object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" />
       </div>

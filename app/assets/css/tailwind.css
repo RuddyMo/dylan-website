@@ -9,6 +9,7 @@
 
 @theme {
   --font-sans: Poppins, sans-serif;
+  --font-display: "Playfair Display", serif;
 
   --animate-shine: shine 3s ease-out infinite;
   --animate-gradient-flow: gradientFlow 10s ease 0s infinite normal none running;

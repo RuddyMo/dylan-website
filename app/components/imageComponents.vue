@@ -33,9 +33,11 @@
 import { ref, onMounted, onUnmounted, nextTick, computed, type Ref } from 'vue';
 
 const { $supabase } = useNuxtApp();
+const { fetchOrder, applyOrder } = useImageOrder();
 
 interface AccueilImage {
   url: string;
+  name: string;
 }
 
 const containerDesktop: Ref<HTMLElement | null> = ref(null);
@@ -81,14 +83,17 @@ const fetchImages = async (): Promise<void> => {
   }
   if (!data) return;
 
-  images.value = data
+  const files: AccueilImage[] = data
     .filter((file) => !!file.name && !file.name.startsWith('.'))
     .filter((file) => file.name.toLowerCase().endsWith('.webp'))
     .map((file) => {
       const { data: publicData } = $supabase.storage.from('Photos').getPublicUrl(`accueil/${file.name}`);
 
-      return { url: publicData.publicUrl };
+      return { url: publicData.publicUrl, name: file.name };
     });
+
+  const order = await fetchOrder('accueil');
+  images.value = applyOrder(files, order);
 
   await nextTick();
   scheduleRecalc();

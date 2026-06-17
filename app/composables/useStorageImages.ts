@@ -52,7 +52,7 @@ export const useStorageImages = () => {
       }
 
       return allFiles
-        .filter((file) => file?.name && file.name !== '.emptyFolderPlaceholder')
+        .filter((file) => file?.name && !file.name.startsWith('.'))
         .map((file: any): ImageItem => {
         const fullPath = `${folderPath}/${file.name}`;
 

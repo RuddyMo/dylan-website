@@ -15,7 +15,7 @@
         :style="{ transform: `translateX(-${scrollPosition}px)` }"
       >
         <div v-for="(image, index) in images" :key="index" class="relative flex min-w-full items-center justify-center">
-          <img :src="image.url" alt="Slide" class="max-h-[calc(100dvh-72px)] max-w-full w-auto object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" />
+          <img :src="image.url" alt="Slide" class="max-h-[calc(100dvh-72px)] max-w-full w-auto object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" @load="scheduleRecalc" />
           <div class="absolute inset-0 z-10" />
         </div>
       </div>
@@ -61,6 +61,10 @@ const recalcMaxScroll = () => {
   scrollPosition.value = clamp(scrollPosition.value, 0, maxScroll.value);
 };
 
+const scheduleRecalc = () => {
+  requestAnimationFrame(() => requestAnimationFrame(recalcMaxScroll));
+};
+
 const updateScrollPosition = (delta: number) => {
   scrollPosition.value = clamp(scrollPosition.value + delta, 0, maxScroll.value);
 };
@@ -87,7 +91,7 @@ const fetchImages = async (): Promise<void> => {
     });
 
   await nextTick();
-  recalcMaxScroll();
+  scheduleRecalc();
 };
 
 const touchStartX: Ref<number | null> = ref(null);

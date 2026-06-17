@@ -3,42 +3,22 @@
     <div class="mb-6 flex items-start justify-between gap-4">
       <div>
         <h1 class="text-2xl font-bold">Gestion des images - Accueil</h1>
-        <p class="text-muted-foreground text-sm mt-1">{{ images.length }} image(s) trouvée(s)</p>
+        <p class="text-muted-foreground text-sm mt-1">
+          {{ images.length }} image(s) — glissez-déposez pour régler l'ordre d'affichage
+        </p>
       </div>
       <ImageUploader folder="accueil" @uploaded="loadImages" />
     </div>
 
-    <UiDatatable :data="images" :options="options">
-      <template #image="{ cellData }">
-        <div class="flex items-center gap-3">
-          <img :src="thumbSrc(cellData.url)" :alt="cellData.name" loading="lazy" class="w-12 h-12 object-cover rounded" />
-          <span class="text-sm font-medium">{{ cellData.name }}</span>
-        </div>
-      </template>
+    <p v-if="!images.length" class="text-muted-foreground py-12 text-center text-sm">Aucune image pour l'instant.</p>
 
-      <template #actions="{ rowData }">
-        <div class="flex items-center gap-1">
-          <button
-            type="button"
-            class="inline-flex size-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
-            title="Voir l'image"
-            aria-label="Voir l'image"
-            @click="dialogs?.preview(rowData)"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /><circle cx="12" cy="12" r="3" /></svg>
-          </button>
-          <button
-            type="button"
-            class="inline-flex size-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-red-50 hover:text-red-600"
-            title="Supprimer l'image"
-            aria-label="Supprimer l'image"
-            @click="dialogs?.requestDelete(rowData)"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg>
-          </button>
-        </div>
-      </template>
-    </UiDatatable>
+    <GallerySortableImageGrid
+      v-else
+      :items="images"
+      @reorder="onReorder"
+      @preview="dialogs?.preview"
+      @remove="dialogs?.requestDelete"
+    />
 
     <GalleryActionDialogs ref="dialogs" :on-delete="removeImage" />
   </div>
@@ -47,6 +27,7 @@
 <script lang="ts" setup>
 import { useStorageImages } from '~/composables/useStorageImages';
 import type { ImageItem } from '~/composables/useStorageImages';
+import { useImageOrder } from '~/composables/useImageOrder';
 
 definePageMeta({
   layout: 'sidebar',
@@ -54,22 +35,33 @@ definePageMeta({
 });
 
 const { fetchImagesFromFolder, deleteImage } = useStorageImages();
+const { fetchOrder, saveOrder, applyOrder } = useImageOrder();
+const { success, error } = useToast();
 
 const dialogs = useTemplateRef('dialogs');
 
 const images = ref<ImageItem[]>([]);
 
-const thumbSrc = useGalleryThumb();
-const options = galleryTableOptions();
-
 const loadImages = async () => {
-  images.value = await fetchImagesFromFolder('accueil');
+  const [items, order] = await Promise.all([fetchImagesFromFolder('accueil'), fetchOrder('accueil')]);
+  images.value = applyOrder(items, order);
+};
+
+const onReorder = async (ordered: ImageItem[]) => {
+  images.value = ordered;
+  const result = await saveOrder('accueil', ordered.map((image) => image.name));
+  if (result.success) {
+    success('Ordre enregistré');
+  } else {
+    error("L'enregistrement de l'ordre a échoué");
+  }
 };
 
 const removeImage = async (path: string) => {
   const result = await deleteImage(path);
   if (result.success) {
-    images.value = images.value.filter((img) => img.path !== path);
+    images.value = images.value.filter((image) => image.path !== path);
+    await saveOrder('accueil', images.value.map((image) => image.name));
   }
   return result;
 };

@@ -15,7 +15,7 @@
         :style="{ transform: `translateX(-${scrollPosition}px)` }"
       >
         <div v-for="(image, index) in images" :key="index" class="relative flex min-w-full items-center justify-center">
-          <img :src="image.url" alt="Slide" class="max-h-[calc(100dvh-72px)] max-w-full w-auto object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" />
+          <img :src="image.url" alt="Slide" class="max-h-[calc(100dvh-72px)] max-w-full w-auto object-contain pointer-events-none select-none" draggable="false" style="-webkit-user-drag: none" @load="scheduleRecalc" />
           <div class="absolute inset-0 z-10" />
         </div>
       </div>
@@ -33,9 +33,11 @@
 import { ref, onMounted, onUnmounted, nextTick, computed, type Ref } from 'vue';
 
 const { $supabase } = useNuxtApp();
+const { fetchOrder, applyOrder } = useImageOrder();
 
 interface AccueilImage {
   url: string;
+  name: string;
 }
 
 const containerDesktop: Ref<HTMLElement | null> = ref(null);
@@ -61,6 +63,10 @@ const recalcMaxScroll = () => {
   scrollPosition.value = clamp(scrollPosition.value, 0, maxScroll.value);
 };
 
+const scheduleRecalc = () => {
+  requestAnimationFrame(() => requestAnimationFrame(recalcMaxScroll));
+};
+
 const updateScrollPosition = (delta: number) => {
   scrollPosition.value = clamp(scrollPosition.value + delta, 0, maxScroll.value);
 };
@@ -77,17 +83,20 @@ const fetchImages = async (): Promise<void> => {
   }
   if (!data) return;
 
-  images.value = data
+  const files: AccueilImage[] = data
     .filter((file) => !!file.name && !file.name.startsWith('.'))
     .filter((file) => file.name.toLowerCase().endsWith('.webp'))
     .map((file) => {
       const { data: publicData } = $supabase.storage.from('Photos').getPublicUrl(`accueil/${file.name}`);
 
-      return { url: publicData.publicUrl };
+      return { url: publicData.publicUrl, name: file.name };
     });
 
+  const order = await fetchOrder('accueil');
+  images.value = applyOrder(files, order);
+
   await nextTick();
-  recalcMaxScroll();
+  scheduleRecalc();
 };
 
 const touchStartX: Ref<number | null> = ref(null);
